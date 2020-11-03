@@ -15,11 +15,10 @@ namespace Kontrollstrukturen
 
     class Program
     {
-        static int[] meinArray = new int[80000];
+
         static void Main(string[] args)
         {
 
-            meinArray = null;
             #region Bedingungen
 
 
