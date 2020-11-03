@@ -3,15 +3,6 @@ using System.Collections.Generic;
 
 namespace Kontrollstrukturen
 {
-    enum Programmzustaende
-    {
-        Stopping,
-        Paused,
-        Running,
-        Starting,
-        Stopped
-    }
-
 
     class Program
     {
