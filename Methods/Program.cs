@@ -37,5 +37,17 @@ namespace Methods
             pZahl += 2;
             Console.WriteLine(pZahl);
         }
+
+
+        /// Erstellen von Methoden welche ++ nachstellen
+        /// 1. Name: PostIncrement
+        ///     Originalvariable sichern
+        ///     Original erhöhen
+        ///     Sicherung zurückgeben
+        /// 2. Name: PreIncrement
+        ///     Original erhöhen
+        ///     Original zurückgeben
+        ///     
+
     }
 }
