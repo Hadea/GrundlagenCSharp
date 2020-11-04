@@ -10,9 +10,14 @@ namespace Methods
             int MeineNeueZahl = MethodeB(MeineZahl);
 
             MethodeC(ref MeineZahl);
-        }
 
-        static void MethodeA()
+            int PreRueckgabe = PreIncrement(ref MeineZahl);
+            int PostRueckgabe = PostIncrement(ref MeineZahl);
+        }
+        /// <summary>
+        /// Gibt einen Text auf die Konsole aus um anzuzeigen das die Methode gestartet wurde.
+        /// </summary>
+        static void MethodeA() // Methode die keine Daten übergeben bekommt "()" und auch keine daten zurückgibt "void"
         {
             Console.WriteLine("Methode A wurde gestartet");
         }
@@ -22,7 +27,7 @@ namespace Methods
         /// </summary>
         /// <param name="pZahl">Zahl die erhöht werden soll</param>
         /// <returns>Ergebnis des Erhöhens um 2.</returns>
-        static int MethodeB(int pZahl)
+        static int MethodeB(int pZahl) //
         {
             pZahl += 2; // pZahl = pZahl + 2;
             return pZahl;
@@ -44,10 +49,25 @@ namespace Methods
         ///     Originalvariable sichern
         ///     Original erhöhen
         ///     Sicherung zurückgeben
+        static int PostIncrement(ref int pZahl)
+        {
+            int backup;
+            backup = pZahl;
+            // alternativ  int backup = pZahl;
+
+            pZahl = pZahl + 1; // alternativ  pZahl += 1;
+
+            return backup;
+        }
+
+
         /// 2. Name: PreIncrement
         ///     Original erhöhen
         ///     Original zurückgeben
-        ///     
-
+        static int PreIncrement(ref int pZahl)
+        {
+            pZahl = pZahl + 1;
+            return pZahl;
+        }
     }
 }
