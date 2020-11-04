@@ -7,7 +7,9 @@ namespace Datentypen
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("asdas");
+            #region Datentypen und Kontainter
+
+   
 
             long Ganzzahl64Bit; // -9 Trillionen bis +9 Trillionen
             ulong Ganzzahl64BitPositiv; // 0 bis +18 Trillionen
@@ -58,6 +60,46 @@ namespace Datentypen
             List<byte> ListOfThousendByte = new List<byte>(1024); //legt die anfangsgrösse des RAM fest
             // ListOfThousendByte.Count enthält die anzahl der elemente
             // ListOfThousendByte.Capacity enthält die grösse der Liste
+
+            LinkedList<byte> LinkedListOfByte = new LinkedList<byte>(); //erstellt eine LinkedList
+                                                                        // dynamische länge, nicht hintereinander im RAM, Einfügen und löschen überall erlaubt
+
+            #endregion
+
+            int A = 4;
+            int B = 9;
+            int AdditionsErgebnis = A + B; // 13
+            int SubtraktionsErgebnis = A - B; // -5
+            int DivisionsErgebnis = A / B; // 0
+            int MultiplikationsErgebnis = A * B; // 36
+            int ModuloErgebnis = A % B; // 4
+
+            int IncrementErgebnisA = A++; // 4, A wird nach der Benutzung raufgezählt
+            int IncrementErgebnisB = ++B; // 10, B wird vor der Benutzung raufgezählt
+
+
+            /// Übung
+            /// 
+            int Alpha = 4;
+            int Bravo = 6;
+
+            // Alpha = 5
+            // Bravo = 7
+            //   11            4    +   7
+            int ErgebnisA = Alpha++ + ++Bravo;
+
+            int Charly = 4;
+            int Delta = 6;
+
+            // Charly= 6
+            // Delta = 9
+            //                  5    +    5     +  7      +   8          8
+            int ErgebnisB = ++Charly + Charly++ + ++Delta + ++Delta + Delta++;
+
+
+
+
+
 
             Console.WriteLine("Hello World!");
         } // ende Main
