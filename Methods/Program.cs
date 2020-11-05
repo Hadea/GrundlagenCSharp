@@ -18,7 +18,38 @@ namespace Methods
 
             ArrayConsolePrint(ArrayOfInt);
 
+            ArrayInitializeAscending(ArrayOfInt);
+
+            ArrayConsolePrint(ArrayOfInt);
+
+            int durchschnitt = ArrayAverage(ArrayOfInt);
+            Console.WriteLine("Der durchschnitt ist: " + durchschnitt);
         }
+
+        static void ArrayInitializeAscending(int[] pArrayToFill)
+        {
+            for (int counter = 0; counter < pArrayToFill.Length; counter++)
+            {
+                pArrayToFill[counter] = counter;
+            }
+        }
+
+
+        /// <summary>
+        /// Gibt den Inhalt des Arrays auf die Konsole aus. Die Werte werden mit Leerzeichen
+        /// voneinander getrennt. Es wird kein Enterzeichen am ende der Ausgabe angefügt.
+        /// </summary>
+        /// <param name="pArrayToPrint">Array welches ausgegeben werden soll</param>
+        static void ArrayConsolePrint(int[] pArrayToPrint)
+        {
+            foreach (var item in pArrayToPrint)
+            {
+                Console.Write(item + " ");
+            }
+        }
+
+
+
         /// <summary>
         /// Gibt einen Text auf die Konsole aus um anzuzeigen das die Methode gestartet wurde.
         /// </summary>
