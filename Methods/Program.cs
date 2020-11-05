@@ -24,8 +24,66 @@ namespace Methods
 
             int durchschnitt = ArrayAverage(ArrayOfInt);
             Console.WriteLine("Der durchschnitt ist: " + durchschnitt);
+
+            short[] ArrayOfShort = new short[50];
+            ArrayAverage(ArrayOfShort, false);
+
         }
 
+        // Hier sind 3 verschiedene Varianten der Methode "ArrayAverage"
+        // Der Compiler kann sie unterscheiden da sich die Parameter unterscheiden
+        // Dieses "Overloading" benutzt man um es dem Anwender der Methoden einfach zu machen
+        // die richtige Methode auszuwählen.
+        private static short ArrayAverage(short[] pArrayToCalculate)
+        {
+            short summe = 0;
+            foreach (var item in pArrayToCalculate)
+            {
+                summe += item;
+            }
+            return (short)(summe / pArrayToCalculate.Length);
+
+        }
+        private static short ArrayAverage(short[] pArrayToCalculate, bool test)
+        {
+            short summe = 0;
+            foreach (var item in pArrayToCalculate)
+            {
+                summe += item;
+            }
+            return (short)(summe / pArrayToCalculate.Length);
+
+        }
+        private static int ArrayAverage(int[] pArrayToCalculate)
+        {
+            #region Variante1
+            int summe = 0;
+            foreach (var item in pArrayToCalculate)
+            {
+                summe += item;
+            }
+            return summe / pArrayToCalculate.Length;
+
+            #endregion
+
+            #region Variante2
+            /*
+            int summe = 0;
+            int counter = 0;
+            while (counter < pArrayToCalculate.Length)
+            {
+                summe += pArrayToCalculate[counter++];
+            }
+
+            return summe / counter;
+            */
+            #endregion
+        }
+
+        /// <summary>
+        /// Befüllt das Array mit Zahlen aufsteigend bei 0 beginnent.
+        /// </summary>
+        /// <param name="pArrayToFill">Array welches befüllt werden soll</param>
         static void ArrayInitializeAscending(int[] pArrayToFill)
         {
             for (int counter = 0; counter < pArrayToFill.Length; counter++)
