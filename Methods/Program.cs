@@ -14,6 +14,10 @@ namespace Methods
             int PreRueckgabe = PreIncrement(ref MeineZahl);
             int PostRueckgabe = PostIncrement(ref MeineZahl);
 
+            int[] ArrayOfInt = new int[20];
+
+            ArrayConsolePrint(ArrayOfInt);
+
         }
         /// <summary>
         /// Gibt einen Text auf die Konsole aus um anzuzeigen das die Methode gestartet wurde.
