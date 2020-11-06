@@ -68,6 +68,7 @@ namespace Taschenrechner
 
                 calc.NumberB = ConvertedNumber;
 
+                //Todo: divZero check should be in calculator!
                 if ((calc.Operator == Operations.Modulo || calc.Operator == Operations.Division) && calc.NumberB == 0)
                 {
                     Console.WriteLine("Division by zero is undefined!");
