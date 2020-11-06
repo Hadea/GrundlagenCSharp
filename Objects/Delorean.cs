@@ -9,8 +9,7 @@ namespace Objects
         public virtual void ID()
         {
             Console.WriteLine("Delorean");
-        }
-        
+        }        
     }
 
     class TimeMashine : Delorean

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datentypen", "Datentypen\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Methods", "Methods\Methods.csproj", "{91B50924-1A7B-4304-9293-CAC81BB68721}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Objects", "Objects\Objects.csproj", "{66FC1539-3A29-497A-A8E5-308E12BC714A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Objects", "Objects\Objects.csproj", "{66FC1539-3A29-497A-A8E5-308E12BC714A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taschenrechner", "Taschenrechner\Taschenrechner.csproj", "{38E7D177-7CC7-4D58-BE0E-D6DBB8E2026C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{66FC1539-3A29-497A-A8E5-308E12BC714A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66FC1539-3A29-497A-A8E5-308E12BC714A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66FC1539-3A29-497A-A8E5-308E12BC714A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E7D177-7CC7-4D58-BE0E-D6DBB8E2026C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E7D177-7CC7-4D58-BE0E-D6DBB8E2026C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E7D177-7CC7-4D58-BE0E-D6DBB8E2026C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E7D177-7CC7-4D58-BE0E-D6DBB8E2026C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
