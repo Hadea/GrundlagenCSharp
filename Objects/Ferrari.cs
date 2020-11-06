@@ -15,6 +15,16 @@ namespace Objects
             SitzAnzahl = 2;
             //Ventile = 5; // funktioniert nicht da Ventile nicht mitvererbt wurde
         }
+
+        public override void Identifikation() // override sagt das ich die Methode aus der Basisklasse ersetzen möchte
+        {
+            Console.WriteLine("Ich bin ein Ferrari");
+        }
+
+        public override void LichtAn()
+        {
+            throw new NotImplementedException(); //TODO: please implement
+        }
     }
 
     // public class Maranello : Ferrari { } // nicht erlaubt da Ferrari sealed ist

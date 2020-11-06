@@ -4,7 +4,12 @@ using System.Text;
 
 namespace Objects
 {
-    public partial class Auto
+    /// <summary>
+    /// Stellt die allgemeine funktionalität von Autos bereit, darf aber durch
+    /// "abstract" nicht selbst erstellt werden.
+    /// "partial" besagt das die Klasse in mehreren teilen geschrieben worden ist
+    /// </summary>
+    public abstract partial class Auto
     {
         public int ReifenAnzahl; // Andere klassen können darauf zugreifen und erben
         protected int SitzAnzahl; // "Fammiliengeheimnis" Vererbt an Child-Objekte, aber nicht von anderen klassen sichtbar
@@ -59,6 +64,14 @@ namespace Objects
             SchreibCounter++;
             Ventile = NeueVentilanzahl;
         }
+
+
+        public virtual void Identifikation() // virtual sagt das die Methode ersetzt werden kann 
+        {
+            Console.WriteLine("Ich bin ein Auto");
+        }
+
+        public abstract void LichtAn(); // alle ableitenden Klassen müssen LichtAn() implementieren
     }
 
 }
