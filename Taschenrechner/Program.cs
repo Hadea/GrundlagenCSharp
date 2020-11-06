@@ -1,62 +1,78 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Channels;
 
 namespace Taschenrechner
 {
     class Program
     {
-        static void Main(string[] args)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Standard naming convention breaks C#")]
+        static void Main()
         {
             Console.WriteLine("Hello User, this is a calculator!");// macht automatisch einen Zeilenumbruch
-            Console.Write("Please enter your first number : "); // macht keinen Zeilenumbruch
             string UserInput;
-            UserInput = Console.ReadLine();// liesst von der Konsole und speichert in string
             int ConvertedNumber;
-            if (!int.TryParse(UserInput, out ConvertedNumber))
+
+            do
             {
-                Console.WriteLine("Input error. Please insert integer numbers only!");
-                return;
-            }
+                Console.Write("Please enter your first number : ");
+                UserInput = Console.ReadLine();
+            } while (!int.TryParse(UserInput, out ConvertedNumber));
 
             Calculator calc = new Calculator();
             calc.NumberA = ConvertedNumber;
+            bool faultyInput = true;
 
-            Console.Write("Please enter an operation ( + - * / % ) : ");
-            UserInput = Console.ReadLine();
-
-            switch (UserInput)
+            do
             {
-                case "+":
-                    calc.Operator = Operations.Addition;
-                    break;
-                case "-":
-                    calc.Operator = Operations.Substration;
-                    break;
-                case "*":
-                    calc.Operator = Operations.Multiplication;
-                    break;
-                case "/":
-                    calc.Operator = Operations.Division;
-                    break;
-                case "%":
-                    calc.Operator = Operations.Modulo;
-                    break;
-                default:
-                    Console.WriteLine("Unkown operator!");
-                    return;
+                Console.Write("Please enter an operation ( + - * / % ) : ");
+                UserInput = Console.ReadLine();
+                switch (UserInput)
+                {
+                    case "+":
+                        calc.Operator = Operations.Addition;
+                        faultyInput = false;
+                        break;
+                    case "-":
+                        calc.Operator = Operations.Substration;
+                        faultyInput = false;
+                        break;
+                    case "*":
+                        calc.Operator = Operations.Multiplication;
+                        faultyInput = false;
+                        break;
+                    case "/":
+                        calc.Operator = Operations.Division;
+                        faultyInput = false;
+                        break;
+                    case "%":
+                        calc.Operator = Operations.Modulo;
+                        faultyInput = false;
+                        break;
+                    default:
+                        Console.WriteLine("Unkown operator, try again: ");
+                        break;
+                }
+            } while (faultyInput);
+
+            do
+            {
+                Console.Write("Please insert second number : ");
+                UserInput = Console.ReadLine();
             }
+            while (!int.TryParse(UserInput, out ConvertedNumber));
 
-            Console.Write("Please insert second number : ");
-            UserInput = Console.ReadLine();
+            calc.NumberB = ConvertedNumber;
 
-            if (!int.TryParse(UserInput, out ConvertedNumber))
+            if ((calc.Operator == Operations.Modulo || calc.Operator == Operations.Division) && calc.NumberB == 0)
             {
-                Console.WriteLine("Input error. Please insert integer numbers only!");
+                Console.WriteLine("Division by zero is undefined!");
                 return;
             }
 
-            calc.NumberB = ConvertedNumber;
-            Console.WriteLine("Result is: " +  calc.Calculate());
+            Console.WriteLine("Result is: " + calc.Calculate());
         }
     }
 }

@@ -12,27 +12,15 @@ namespace Taschenrechner
 
         public int Calculate()
         {
-            int _result;
-            switch (Operator)
+            var _result = Operator switch
             {
-                case Operations.Addition:
-                    _result= NumberA + NumberB;
-                    break;
-                case Operations.Substration:
-                    _result = NumberA - NumberB;
-                    break;
-                case Operations.Multiplication:
-                    _result = NumberA * NumberB;
-                    break;
-                case Operations.Division:
-                    _result = NumberA / NumberB;
-                    break;
-                case Operations.Modulo:
-                    _result = NumberA % NumberB;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+                Operations.Addition => NumberA + NumberB,
+                Operations.Substration => NumberA - NumberB,
+                Operations.Multiplication => NumberA * NumberB,
+                Operations.Division => NumberA / NumberB,
+                Operations.Modulo => NumberA % NumberB,
+                _ => throw new NotImplementedException(),
+            };
             return _result;
         }
 
