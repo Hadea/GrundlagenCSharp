@@ -51,14 +51,10 @@ namespace Generics
         {
             Random r = new Random();
 
-            List<T> intreference = (List<T>)Convert.ChangeType(pArray, typeof(List<T>));
-            for (int i = 0; i < intreference.Count; i++)
+            for (int i = 0; i < pArray.Count; i++)
             {
-                intreference[i] = (T)Convert.ChangeType(r.Next(100), typeof(T));
+                pArray[i] = (T)Convert.ChangeType(r.Next(100), typeof(T));
             }
-
-
         }
-
     }
 }
