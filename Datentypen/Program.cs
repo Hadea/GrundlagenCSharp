@@ -96,12 +96,14 @@ namespace Datentypen
             //                  5    +    5     +  7      +   8          8
             int ErgebnisB = ++Charly + Charly++ + ++Delta + ++Delta + Delta++;
 
+            int[] IntegerArray = new int[5]; // erstellt ein array mit 5 feldern vom typ int
+            IntegerArray = new int[5] {1,2,3,4,5 }; // initialisiert das array direkt mit werten
 
+            Random rndGen = new Random(); // startet eine inztanz des Zufallsgenerators
+            rndGen.NextBytes(ByteArray); // befüllt das ByteArray mit zufälligen zahlen.
 
+            int[,] MehrdimensionalesIntArray = new int[10, 5]; // Array der grösse 10 * 5. Jedes element ist vom typ int.
 
-
-
-            Console.WriteLine("Hello World!");
         } // ende Main
 
         enum MyEnum
