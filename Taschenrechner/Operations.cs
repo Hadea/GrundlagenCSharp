@@ -1,7 +1,9 @@
 ﻿
 namespace Taschenrechner
 {
-    enum Operations
+    // dieses enum ist intern kein int mehr sondern ein byte.
+    // Spart etwas speicher gerade wenn es später in eine Datei geschrieben werden sollte
+    enum Operations : byte
     {
         UnSet,
         Addition,
