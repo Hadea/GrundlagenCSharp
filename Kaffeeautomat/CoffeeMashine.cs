@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 
 namespace Kaffeeautomat
 {
@@ -16,27 +18,22 @@ namespace Kaffeeautomat
         public byte CMilk
         {
             get { return containerMilk; }
-            private set { containerMilk = value; }
         }
         public byte CCoffee
         {
             get { return containerCoffee; }
-            private set { containerCoffee = value; }
         }
         public byte CWater
         {
             get { return containerWater; }
-            private set { containerWater = value; }
         }
         public byte CWasteWater
         {
             get { return containerWasteWater; }
-            private set { containerWasteWater = value; }
         }
         public byte CWasteCoffee
         {
             get { return containerWasteCoffee; }
-            private set { containerWasteCoffee = value; }
         }
 
 
