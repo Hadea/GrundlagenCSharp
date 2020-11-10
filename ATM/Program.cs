@@ -6,10 +6,33 @@ namespace ATM
     {
         static void Main()
         {
-            int kontostand = 5000; // erstellung einer ganzzahl welche ein Kontostand darstellen soll 
+            Atm BankAutomat = new Atm();
 
-            Console.WriteLine("Hallo User, ich bin ein Geldautomat");
-            Console.WriteLine("Ihr Kontostand beträgt " + kontostand);
+            Console.Write("Hallo User, ich bin ein Geldautomat!\n\nBitte geben sie ihren Namen ein");
+            string userName = Console.ReadLine().ToLower();
+            Console.Write("Bitte geben sie ihren PIN ein: ");
+            string userPinS = Console.ReadLine();
+            ushort userPin;
+            if (! ushort.TryParse(userPinS, out userPin) || userPinS.Length != 4)
+            {
+                Console.WriteLine("Die Eingabe entspricht nicht dem PIN format, bye!");
+                return;
+            }
+
+            switch (BankAutomat.GetBalance(userName, userPin, out int userBalance))
+            {
+                case ATMError.NoError:
+                    Console.WriteLine("Ihr Kontostand beträgt " + userBalance);
+                    break;
+                case ATMError.PinError:
+                case ATMError.UserError:
+                    Console.WriteLine("Kommst hier nicht rein, du hacker!!");
+                    return;
+                default:
+                    Console.WriteLine("Der Gerät klappt irgendwie nischt...tschuligom");
+                    return;
+            }
+
             Console.WriteLine("Möchten Sie Geld abheben? [y/n]");
 
             ConsoleKey nutzerTaste = Console.ReadKey(true).Key;// liesst die gedrückte taste auf der tastatur aus
@@ -24,14 +47,23 @@ namespace ATM
                     return; // beendet die Main
                 }
 
-                if (kontostand < convertedNumber) // testen ob der kontostand kleiner als der gewünschte betrag ist
+                switch (BankAutomat.Withdraw(userName, userPin, convertedNumber))
                 {
-                    Console.WriteLine("So viel geld haben Sie nicht. Ende!");
-                    return; // beendet die Main
+                    case ATMError.NoError:
+                        Console.WriteLine("Das Geld wurde abgebucht");
+                        BankAutomat.GetBalance(userName, userPin, out int newBalance);
+                        Console.WriteLine("Neuer Kontostand : " + newBalance);
+                        break;
+                    case ATMError.PinError:
+                    case ATMError.UserError:
+                        Console.WriteLine("Kommst hier nicht rein, du hacker!!");
+                        return;
+                    case ATMError.BalanceError:
+                        Console.WriteLine("Sie haben nicht genug Geld");
+                        break;
+                    default:
+                        break;
                 }
-
-                kontostand -= convertedNumber; //zieht den gewünschten betrag vom konto ab
-                Console.WriteLine("Geld wurde abgebucht, neuer Kontostand: " + kontostand); // zeigt den neuen kontostand
             }
             Console.WriteLine("Bye");
         }
