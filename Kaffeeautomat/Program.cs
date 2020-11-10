@@ -3,24 +3,34 @@ using System.Threading;
 
 namespace Kaffeeautomat
 {
+    struct Button
+    {
+        public string Text;
+        public Recipe MachineValue;
+    }
+
     class Program
     {
         static void Main()
         {
             Console.WriteLine("Hallo User, dies ist ein Kaffeeautomat\nKaffeemaschine wird gestartet");
             CoffeeMashine coffeeMashine = new CoffeeMashine();
-
+            string userInput;
             bool shutdownMashine = false;
+
+            Button[] buttons = new Button[6];
+            buttons[3].Text = " K -> Kaffee ausgeben";
+            buttons[3].MachineValue = Recipe.Coffee;
+
             do
             {
                 Thread.Sleep(2000);
                 Console.Clear();
                 Console.WriteLine(" K -> Kaffee ausgeben\n C -> Capuchino\n H -> Heisses Wasser\n M -> Heisse Milch\n ? -> Milchkaffee\n W -> Wartung\n  A -> Kaffeemaschine abschalten");
-                string userInput = Console.ReadLine().ToUpper();
+                userInput = Console.ReadLine().ToUpper();
 
                 switch (userInput)
                 {
-                    case "k":
                     case "K":
                         Console.WriteLine("Ihr Kaffee wird zubereitet");
                         if (coffeeMashine.Dispense(Recipe.Coffee))
@@ -38,10 +48,7 @@ namespace Kaffeeautomat
                         shutdownMashine = true;
                         break;
                     case "W":
-                        coffeeMashine.CCoffee = 100;
-                        coffeeMashine.CWater = 100;
-                        coffeeMashine.CWasteCoffee = 0;
-                        coffeeMashine.CWasteWater = 0;
+                        coffeeMashine.Maintenance();
                         Console.WriteLine("Wartung durchgeführt, container sind wieder ok.");
                         break;
                     default:
@@ -53,6 +60,7 @@ namespace Kaffeeautomat
 
             } while (!shutdownMashine);
             Console.WriteLine("Kaffeeautomat wird beendet");
+            
         }
     }
 }
