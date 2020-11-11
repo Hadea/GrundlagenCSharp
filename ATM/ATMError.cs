@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ATM
+﻿namespace ATM
 {
+    /// <summary>
+    /// Represents possible answers of the ATM
+    /// </summary>
     enum ATMError : byte
     {
         NoError,

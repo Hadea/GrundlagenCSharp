@@ -1,23 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ATM
 {
+    /// <summary>
+    /// Represents an ATM device with some sample data
+    /// </summary>
     class Atm
     {
         List<BankAccount> bankAccounts;
 
+        /// <summary>
+        /// Creates an ATM with two sample accounts
+        /// </summary>
         public Atm()
         {
+            // erstellt eine liste für BankAccount und fügt direkt zwei einträge hinzu.
+            // besonderheit dabei ist das keine runden klammern, sondern geschweifte
+            // hinter der listenerstellung verwendet werden
             bankAccounts = new List<BankAccount> {
                 new BankAccount( "hans", 1234, 5000 ),
                 new BankAccount( "katie", 4321, 6500 ) };
         }
 
+        /// <summary>
+        /// Reads the current balance of an account if login is successful
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <param name="Pin"></param>
+        /// <param name="Balance"></param>
+        /// <returns></returns>
         public ATMError GetBalance(string UserName, ushort Pin, out int Balance)
         {
             // testen ob der Container "bankAccounts" korrekt erstellt wurde
+            // zuerst wird getestet ob bankAccounts den inhalt null enthält
+            // sollte dies zutreffen wird sofort der inhalt des if ausgeführt
+            // und der zweite test ignoriert
+            // sollte der erste test fehlschlagen wird auch der zweite test gemacht
+            // dadurch wissen wir bereits im zweiten test das das objekt existieren
+            // muss und wir problemlos auf eigenschaften des objektes zugreifen können.
             if (bankAccounts == null || bankAccounts.Count == 0)
             {
                 Balance = 0;
@@ -72,6 +92,9 @@ namespace ATM
                             return ATMError.NoError;
                         }
                         else
+                            // wenn nur ein befehl in geschweifte klammern kommen würde
+                            // kann man sie weglassen. Je nach firmeninterner Konvention
+                            // vielleicht nicht erlaubt. (if, while, for, do, else)
                             return ATMError.BalanceError;
                     }
                     else
