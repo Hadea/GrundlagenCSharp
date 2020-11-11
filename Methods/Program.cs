@@ -4,18 +4,28 @@ namespace Methods
 {
     class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Demo project for methods
+        /// </summary>
+        static void Main()
         {
             int MeineZahl = 12;
             int MeineNeueZahl = MethodeB(MeineZahl);
 
+            // mit ref wird die Arbeitsspeicheradresse (reference) an die methode "MethodeC"
+            // weitergegeben sodass die methode die original-variable aus zeile 12 ändert.
             MethodeC(ref MeineZahl);
+            // nach diesem aufruf ist MeineZahl auf dem wert 14
 
             int PreRueckgabe = PreIncrement(ref MeineZahl);
             int PostRueckgabe = PostIncrement(ref MeineZahl);
 
+            // ein Array aus ganzzahlen wird im RAM erstellt und die Arbeisspeicheradresse (reference)
+            // wird in der Varialbe ArrayOfInt abgelegt
             int[] ArrayOfInt = new int[20];
 
+            // beim übergeben von Objekten von denen wir nur die Adresse haben benötigen wir kein ref
+            // das trifft auf array als auch Klassen zu.
             ArrayConsolePrint(ArrayOfInt);
 
             ArrayInitializeAscending(ArrayOfInt);
@@ -25,8 +35,14 @@ namespace Methods
             int durchschnitt = ArrayAverage(ArrayOfInt);
             Console.WriteLine("Der durchschnitt ist: " + durchschnitt);
 
-            short[] ArrayOfShort = new short[50];
+            short[] ArrayOfShort = new short[50000];
             ArrayAverage(ArrayOfShort, false);
+
+
+            CopyParameter(MeineZahl);
+
+            
+            int ganzneueVarialbe = VerdoppelnOut(ref MeineZahl);
 
         }
 
@@ -161,6 +177,38 @@ namespace Methods
         static int PreIncrement(ref int pZahl)
         {
             pZahl = pZahl + 1;
+            return pZahl;
+        }
+
+        static void ReadonlyParameterDemo(in int pZahl) // methode erhält die arbeitsspeicheradress eines integers welcher innerhalb der methode nicht verändert werden darf
+        {
+            Console.WriteLine(pZahl);
+            // pZahl = 4; // nicht erlaubt da die referenz schreibgeschützt (in) übergeben wurde
+        }
+
+        static void WriteonlyParameterDemo(out int pZahl) // methode erhält die arbeitsspeicheradresse eines integer welcher aber nur zum schreiben da ist. Praktisch falls mehr als eine ausgabe nötig ist.
+        {
+            //Console.WriteLine(pZahl); // nicht erlaubt da nicht sicher ist das pZahl überhaupt initialisiert wurde
+            pZahl = 9; // mindestens einmal muss pZahl beschrieben werden!
+        }
+
+        /// <summary>
+        /// Value demo
+        /// </summary>
+        /// <param name="pZahl">copy of content</param>
+        static void CopyParameter(int pZahl) // Methode erhält eine KOPIE des Inhaltes eines integer und legt diesen in pZahl ab
+        {
+            Console.WriteLine(pZahl);
+        }
+
+        static int Verdoppeln(int pZahl)
+        {
+            return pZahl * 2;
+        }
+
+        static int VerdoppelnOut(ref int pZahl)
+        {
+            pZahl *= 2;
             return pZahl;
         }
     }
