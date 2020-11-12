@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generics", "Generics\Generi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kaffeeautomat", "Kaffeeautomat\Kaffeeautomat.csproj", "{D4B5F9FB-D318-42DB-AD5B-686EB3745715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATM", "ATM\ATM.csproj", "{E650E7A1-22A8-44D4-91A8-E3CE86A88843}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ATM", "ATM\ATM.csproj", "{E650E7A1-22A8-44D4-91A8-E3CE86A88843}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToe", "TicTacToe\TicTacToe.csproj", "{F60B7BB1-AF4F-4148-9DEA-35DD3F5865C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPSCounter", "FPSCounter\FPSCounter.csproj", "{74A89A14-D791-472C-B0FE-D1D44B25259C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{E650E7A1-22A8-44D4-91A8-E3CE86A88843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E650E7A1-22A8-44D4-91A8-E3CE86A88843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E650E7A1-22A8-44D4-91A8-E3CE86A88843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F60B7BB1-AF4F-4148-9DEA-35DD3F5865C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F60B7BB1-AF4F-4148-9DEA-35DD3F5865C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F60B7BB1-AF4F-4148-9DEA-35DD3F5865C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F60B7BB1-AF4F-4148-9DEA-35DD3F5865C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74A89A14-D791-472C-B0FE-D1D44B25259C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A89A14-D791-472C-B0FE-D1D44B25259C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A89A14-D791-472C-B0FE-D1D44B25259C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A89A14-D791-472C-B0FE-D1D44B25259C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
