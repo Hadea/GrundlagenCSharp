@@ -22,6 +22,7 @@ namespace FPSCounter
             if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 1000)
             {
                 Console.SetCursorPosition(0, 0);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write("{0,8} fps", framesSinceLastUpdate );
                 framesSinceLastUpdate = 0;
                 lastUpdate = DateTime.Now;

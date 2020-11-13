@@ -21,6 +21,7 @@ namespace FPSCounter
         public void Draw()
         {
             Console.SetCursorPosition(position.X, position.Y);
+            Console.ForegroundColor = color;
             Console.Write(Content);
         }
 
