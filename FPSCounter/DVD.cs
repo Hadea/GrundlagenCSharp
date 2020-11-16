@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FPSCounter
 {
@@ -31,7 +27,7 @@ namespace FPSCounter
                 for (int i = 0; i < clear.Length; i++)
                 {
                     Console.SetCursorPosition(position.X, position.Y+i);
-                    Console.WriteLine(clear[i]);
+                    Console.Write(clear[i]);
                 }
 
                 // testen ob eine richtungsänderung nötig ist
@@ -57,7 +53,7 @@ namespace FPSCounter
                 for (int i = 0; i < logo.Length; i++)
                 {
                     Console.SetCursorPosition(position.X, position.Y + i);
-                    Console.WriteLine(logo[i]);
+                    Console.Write(logo[i]);
                 }
             }
 

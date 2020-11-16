@@ -13,7 +13,7 @@ namespace FPSCounter // unser eigener namespace FPSCounter
                            // muss
         {
 
-            FPS fpsCounter = new FPS();//erstellt ein O
+            FPS fpsCounter = new FPS();
             Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Yellow;
             TextBox tbTest = new TextBox(new Point(2, 2), ConsoleColor.Red);
