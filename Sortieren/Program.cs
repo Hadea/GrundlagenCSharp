@@ -9,7 +9,7 @@ namespace Sortieren
             int[] arrayData = new int[8];
             arrayRandomFill(arrayData);
             printArray(arrayData);
-            sort(arrayData);
+            selectionSortNaiv(arrayData);
             printArray(arrayData);
         }
 
@@ -31,8 +31,11 @@ namespace Sortieren
             }
         }
 
-        static void sort(int[] ArrayToSort)
+        static void selectionSortNaiv(int[] ArrayToSort)
         {
+            //TODO: Äusserer zähler kann bereits ein element früher aufhören
+            //TODO: Innerer zähler kann ein element später anfangen
+            //TODO: Anstatt sofort zu tauschen nur die position der kleineren Zahl merken, nach dem durchlauf der inneren tauschen
             for (int outer = 0; outer < ArrayToSort.Length; outer++)// zählen von 0 solange kleiner als Arraylänge
             {
                 for (int inner = outer; inner < ArrayToSort.Length; inner++)//zählen von äuserem zählerstand solange kleiner als Arraylänge
