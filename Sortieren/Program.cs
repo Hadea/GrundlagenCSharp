@@ -17,6 +17,8 @@ namespace Sortieren
                         // zahl an innerer position sichern
                         // zahl an äusserer an position der inneren speichern
                         // gesicherte an äusserer position speichern
+                    //ende wenn
+                // ende zählen
             // ende zählen
         }
     }
