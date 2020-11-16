@@ -8,27 +8,43 @@ namespace SchleifenUebung
         static void Main()
         {
             //TextSchleifen();
+
             for (int i = 0; i < 20; i++)
             {
+                List<int> Liste1 = new List<int>();
+                List<int> Liste2 = new List<int>();
 
-            EuroJackpot();
+                EuroJackpot(Liste1, Liste2);
+                PrintLotto(Liste1, Liste2);
+
             }
-
-
-
         }
 
-        static void EuroJackpot()
+        static void PrintLotto(List<int> Numbers, List<int> Special)
+        {
+            Console.Write("EuroJackpot Zahlen:");
+            foreach (var item in Numbers)
+            {
+                Console.Write("{0,3}", item);
+            }
+            Console.Write(" Zusatz:");
+            foreach (var item in Special)
+            {
+                Console.Write("{0,3}", item);
+            }
+            Console.WriteLine();
+        }
+
+        static void EuroJackpot(List<int> Numbers, List<int> Special)
         {
             Random rndGen = new Random();
 
-            List<int> numbers = new List<int>();
-            while (numbers.Count < 5)
+            while (Numbers.Count < 5)
             {
                 int newNumber = rndGen.Next(1, 51);
                 bool insertAllowed = true;
 
-                foreach (var item in numbers)
+                foreach (var item in Numbers)
                 {
                     if (item == newNumber)
                     {
@@ -39,18 +55,17 @@ namespace SchleifenUebung
 
                 if (insertAllowed)
                 {
-                    numbers.Add(newNumber);
+                    Numbers.Add(newNumber);
                 }
 
             }
 
-            List<int> zusatz = new List<int>();
-            while (zusatz.Count < 2)
+            while (Special.Count < 2)
             {
                 int newNumber = rndGen.Next(1, 11);
                 bool insertAllowed = true;
 
-                foreach (var item in zusatz)
+                foreach (var item in Special)
                 {
                     if (item == newNumber)
                     {
@@ -61,22 +76,10 @@ namespace SchleifenUebung
 
                 if (insertAllowed)
                 {
-                    zusatz.Add(newNumber);
+                    Special.Add(newNumber);
                 }
 
             }
-
-            Console.Write("EuroJackpot Zahlen:");
-            foreach (var item in numbers)
-            {
-                Console.Write("{0,3}",item);
-            }
-            Console.Write(" Zusatz:");
-            foreach (var item in zusatz)
-            {
-                Console.Write("{0,3}",item);
-            }
-            Console.WriteLine();
 
         }
 
