@@ -9,6 +9,15 @@ namespace SchleifenUebung
         {
             //TextSchleifen();
 
+            //TODO: 1x Lottoergebnis ziehen
+            //TODO: Schleife umbauen das sie 10 sekunden lang läuft
+            //TODO: Methode bauen welche einen Lottoschein mit dem Lottoergebnis vergleicht
+            //      rückgabe soll die anzahl der korrekten zahlen sein
+            //TODO: Ergebnisarray der länge 8 erstellen. Rückgabe der Vergleichsmethode
+            //      als sprung im Ergebnisarray nutzen und inhalt um 1 raufzählen
+            //TODO: zählvariable in die schleife einbauen
+            //TODO: Ausgabe des arrays und der zählvariable
+
             for (int i = 0; i < 20; i++)
             {
                 List<int> Liste1 = new List<int>();
