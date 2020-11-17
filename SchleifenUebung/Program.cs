@@ -9,24 +9,46 @@ namespace SchleifenUebung
         {
             //TextSchleifen();
 
-            //TODO: 1x Lottoergebnis ziehen
-            //TODO: Schleife umbauen das sie 10 sekunden lang läuft
-            //TODO: Methode bauen welche einen Lottoschein mit dem Lottoergebnis vergleicht
-            //      rückgabe soll die anzahl der korrekten zahlen sein
-            //TODO: Ergebnisarray der länge 8 erstellen. Rückgabe der Vergleichsmethode
-            //      als sprung im Ergebnisarray nutzen und inhalt um 1 raufzählen
-            //TODO: zählvariable in die schleife einbauen
-            //TODO: Ausgabe des arrays und der zählvariable
+            //TODO: 1x Lottoergebnis ziehen (gegen das vergleichen wir unsere scheine)
+            //TODO: Ergebnisarray der länge 8 erstellen.
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 20; i++) //TODO: Schleife umbauen das sie 10 sekunden lang läuft (DateTime.Now)
             {
                 List<int> Liste1 = new List<int>();
                 List<int> Liste2 = new List<int>();
 
                 EuroJackpot(Liste1, Liste2);
                 PrintLotto(Liste1, Liste2);
-
+                //TODO: Rückgabe der Vergleichsmethode als sprung im Ergebnisarray nutzen und inhalt um 1 raufzählen
+                //TODO: zählvariable in die schleife einbauen
             }
+            //TODO: Ausgabe des arrays und der zählvariable
+        }
+
+
+        //TODO: Methode bauen welche einen Lottoschein mit dem Lottoergebnis vergleicht
+        //      rückgabe soll die anzahl der korrekten zahlen sein (List.contains)
+        static int CompareLotto(List<int> Numbers, List<int> Special,
+                                List<int> PrePickedNumbers, List<int> PrePickedSpecial)
+        {
+            // ergebnisvariable erstellen
+            // schleife welche durch die gesamte Numbers-Liste geht
+            //      schleife welche durch die gesamte PrePickedNumbers-Liste geht
+            //          wenn element der äusseren schleife und der inneren identisch sind
+            //              ergebnisvariable um 1 erhöhen
+            //          ende wenn
+            //      ende schleife
+            // ende schleife
+
+            // schleife welche durch die gesamte Special-Liste geht
+            //      schleife welche durch die gesamte PrePickedSpecial-Liste geht
+            //          wenn element der äusseren schleife und der inneren identisch sind
+            //              ergebnisvariable um 1 erhöhen
+            //          ende wenn
+            //      ende schleife
+            // ende schleife
+
+            // rückgabe ergebnisvariable
         }
 
         static void PrintLotto(List<int> Numbers, List<int> Special)
