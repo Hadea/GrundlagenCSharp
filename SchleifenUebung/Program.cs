@@ -11,17 +11,31 @@ namespace SchleifenUebung
 
             //TODO: 1x Lottoergebnis ziehen (gegen das vergleichen wir unsere scheine)
             //TODO: Ergebnisarray der länge 8 erstellen.
+            List<int> NumbersDrawn = new List<int> { 5, 7, 20, 22, 42 };
+            List<int> SpecialsDrawn = new List<int> { 6, 7 };
+            List<int> Numbers = new List<int>() ;
+            List<int> Specials = new List<int>();
 
-            for (int i = 0; i < 20; i++) //TODO: Schleife umbauen das sie 10 sekunden lang läuft (DateTime.Now)
+            Console.WriteLine("EuroJackpot, so schnell es geht");
+            PrintLotto(NumbersDrawn, SpecialsDrawn);
+
+            int[] hitStatistic = new int[8];
+
+            int counter = 0;
+            DateTime startTime = DateTime.Now;
+            while ( (DateTime.Now - startTime).TotalMilliseconds < 10000 ) //TODO: Schleife umbauen das sie 10 sekunden lang läuft (DateTime.Now)
             {
-                List<int> Liste1 = new List<int>();
-                List<int> Liste2 = new List<int>();
-
-                EuroJackpot(Liste1, Liste2);
-                PrintLotto(Liste1, Liste2);
-                //TODO: Rückgabe der Vergleichsmethode als sprung im Ergebnisarray nutzen und inhalt um 1 raufzählen
-                //TODO: zählvariable in die schleife einbauen
+                EuroJackpot(Numbers, Specials);
+                hitStatistic[CompareLotto(NumbersDrawn, SpecialsDrawn, Numbers, Specials)] += 1;
+                counter++;
             }
+
+            Console.WriteLine("Statistik für {0} versuche:", counter);
+            foreach (var item in hitStatistic)
+            {
+                Console.Write(" "+ item);
+            }
+            Console.WriteLine();
             //TODO: Ausgabe des arrays und der zählvariable
         }
 
@@ -31,32 +45,43 @@ namespace SchleifenUebung
         static int CompareLotto(List<int> Numbers, List<int> Special,
                                 List<int> PrePickedNumbers, List<int> PrePickedSpecial)
         {
-            // ergebnisvariable erstellen
-            // schleife welche durch die gesamte Numbers-Liste geht
-            //      schleife welche durch die gesamte PrePickedNumbers-Liste geht
-            //          wenn element der äusseren schleife und der inneren identisch sind
-            //              ergebnisvariable um 1 erhöhen
-            //          ende wenn
-            //      ende schleife
-            // ende schleife
+            int hits = 0;// ergebnisvariable erstellen
+            foreach (int source in Numbers) // schleife welche durch die gesamte Numbers-Liste geht
+            {
+                foreach (int target in PrePickedNumbers)//      schleife welche durch die gesamte PrePickedNumbers-Liste geht
+                {
+                    if (source == target)//wenn element der äusseren schleife und der inneren identisch sind
+                    {
+                        hits++;//              ergebnisvariable um 1 erhöhen
+                    }//          ende wenn
+                }//      ende schleife
+            }// ende schleife
+            
+            foreach (int source in Special)// schleife welche durch die gesamte Special-Liste geht
+            {
+                foreach (int target in PrePickedSpecial)//      schleife welche durch die gesamte PrePickedSpecial-Liste geht
+                {
+                    if (source == target)//          wenn element der äusseren schleife und der inneren identisch sind
+                    {
+                        hits++;//              ergebnisvariable um 1 erhöhen
+                    }//          ende wenn
+                }//      ende schleife
+            }// ende schleife
 
-            // schleife welche durch die gesamte Special-Liste geht
-            //      schleife welche durch die gesamte PrePickedSpecial-Liste geht
-            //          wenn element der äusseren schleife und der inneren identisch sind
-            //              ergebnisvariable um 1 erhöhen
-            //          ende wenn
-            //      ende schleife
-            // ende schleife
-
-            // rückgabe ergebnisvariable
+            return hits;// rückgabe ergebnisvariable
         }
 
-        static void PrintLotto(List<int> Numbers, List<int> Special)
+        /// <summary>
+        /// Prints the contents of two integer-lists to the console to represent a lotto drawing.
+        /// </summary>
+        /// <param name="Numbers">List of 5 numbers between 1 and 50</param>
+        /// <param name="Special">List of 2 numbers between 1 and 10</param>
+        static void PrintLotto(List<int> Numbers, List<int> Special) // methode welche 2 integer-listen mit lottozahlen füllen soll. List ist ein Objekt und wird immer im original weitergegeben
         {
-            Console.Write("EuroJackpot Zahlen:");
-            foreach (var item in Numbers)
+            Console.Write("EuroJackpot Zahlen:"); // ausgabe der Überschrift
+            foreach (var item in Numbers) // den gesamten container Numbers durchgehen
             {
-                Console.Write("{0,3}", item);
+                Console.Write("{0,3}", item); // das aktuell zu bearbeitende element ausgeben. {0,3} bedeutet das item (parameter 0) in mindestens 3 zeichen ausgegeben werden soll.
             }
             Console.Write(" Zusatz:");
             foreach (var item in Special)
@@ -69,6 +94,9 @@ namespace SchleifenUebung
         static void EuroJackpot(List<int> Numbers, List<int> Special)
         {
             Random rndGen = new Random();
+
+            Numbers.Clear();
+            Special.Clear();
 
             while (Numbers.Count < 5)
             {
