@@ -8,14 +8,67 @@ namespace SchleifenUebung
         static void Main()
         {
             //TextSchleifen();
-            /*
-             1. Nutzer begrüssen
-             2. Nutzer fragen ob er selbstwählen, automatisch generieren oder feste zahlen haben will
-             3. Je nach eingabe random, oder feste werte vergeben. alternativ in einer schleife nach zahlen fragen
-                eingegebene Zahlen auf eindeutigkeit testen
-             */
-            List<byte> NumbersDrawn = new List<byte> { 5, 7, 20, 22, 42 };
-            List<byte> SpecialsDrawn = new List<byte> { 6, 7 };
+            List<byte> NumbersDrawn;
+            List<byte> SpecialsDrawn;
+
+            Console.WriteLine("Hallo User, dies ist ein Lotto-Generator");
+            Console.WriteLine("Wie möchten sie ihren Tippschein befüllen?");
+            Console.WriteLine(" 1 -> automatisch");
+            Console.WriteLine(" 2 -> vordefiniert");
+            Console.WriteLine(" 3 -> von Hand");
+            string userInput;
+            do
+            {
+                Console.Write("Bitte wählen sie eine Option: ");
+                userInput = Console.ReadLine();
+            } while (userInput != "1" && userInput != "2" && userInput != "3");
+            Random rndGen = new Random();
+
+            switch (userInput)
+            {
+                case "2": // vordefiniert
+                    NumbersDrawn = new List<byte> { 2, 7, 9, 15, 23, 42 };
+                    SpecialsDrawn = new List<byte> { 6, 8 };
+                    break;
+                case "3": // benutzerdefiniert
+                    NumbersDrawn = new List<byte>();
+                    SpecialsDrawn = new List<byte>();
+                    do
+                    {
+                        Console.Write("Bitte eindeutige Zahl von 1 bis 50 eingeben: ");
+                        if (byte.TryParse(Console.ReadLine(), out byte newNumber) && newNumber > 0 && newNumber < 51 && !NumbersDrawn.Contains(newNumber))
+                        {
+                            NumbersDrawn.Add(newNumber);
+                            Console.Write(" OK");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Das war keine gültige Zahl, nochmal.");
+                        }
+                    } while (NumbersDrawn.Count < 5);
+
+                    do
+                    {
+                        Console.Write("Bitte eindeutige Zahl von 1 bis 10 eingeben: ");
+                        if (byte.TryParse(Console.ReadLine(), out byte newNumber) && newNumber > 0 && newNumber < 11 && !SpecialsDrawn.Contains(newNumber))
+                        {
+                            SpecialsDrawn.Add(newNumber);
+                            Console.Write(" OK");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Das war keine gültige Zahl, nochmal.");
+                        }
+                    } while (SpecialsDrawn.Count < 2);
+                    break;
+                default: // random
+                    NumbersDrawn = new List<byte>();
+                    SpecialsDrawn = new List<byte>();
+                    EuroJackpot(NumbersDrawn, SpecialsDrawn, rndGen);
+                    break;
+
+            }
+
             List<byte> Numbers = new List<byte>();
             List<byte> Specials = new List<byte>();
 
@@ -26,20 +79,22 @@ namespace SchleifenUebung
 
             int counter = 0;
             DateTime startTime = DateTime.Now;
-            while ((DateTime.Now - startTime).TotalMilliseconds < 10000)
+            while ( (DateTime.Now - startTime).TotalMilliseconds < 5000)
             {
-                EuroJackpot(Numbers, Specials);
+                EuroJackpot(Numbers, Specials, rndGen);
                 hitStatistic[CompareLotto(NumbersDrawn, SpecialsDrawn, Numbers, Specials)] += 1;
                 counter++;
             }
 
-            Console.WriteLine("Statistik für {0} versuche:", counter.ToString("0,00"));
+            Console.WriteLine("Statistik für {0} versuche und {1} Sekunden:", counter.ToString("0,00"), (DateTime.Now - startTime).TotalSeconds);
             foreach (var item in hitStatistic)
             {
                 Console.Write(" " + item);
             }
             Console.WriteLine();
-            Console.WriteLine("Die Versuche haben {0} € gekostet", (counter * 2 + counter / 20).ToString("0,00"));
+            Console.WriteLine("Die Versuche haben {0} Euro gekostet", (counter * 2 + counter / 20).ToString("0,00"));
+            Console.ReadLine();
+
         }
 
 
@@ -94,16 +149,14 @@ namespace SchleifenUebung
             Console.WriteLine();
         }
 
-        static void EuroJackpot(List<byte> Numbers, List<byte> Special)
+        static void EuroJackpot(List<byte> Numbers, List<byte> Special, Random RandomGenerator)
         {
-            Random rndGen = new Random();
-
             Numbers.Clear();
             Special.Clear();
 
             while (Numbers.Count < 5)
             {
-                byte newNumber = (byte)rndGen.Next(1, 51);
+                byte newNumber = (byte)RandomGenerator.Next(1, 51);
                 bool insertAllowed = true;
 
                 foreach (var item in Numbers)
@@ -124,7 +177,7 @@ namespace SchleifenUebung
 
             while (Special.Count < 2)
             {
-                byte newNumber = (byte)rndGen.Next(1, 11);
+                byte newNumber = (byte)RandomGenerator.Next(1, 11);
                 bool insertAllowed = true;
 
                 foreach (var item in Special)
