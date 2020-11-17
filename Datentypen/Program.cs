@@ -67,11 +67,19 @@ namespace Datentypen
             // ListOfThousendByte.Count enthält die anzahl der elemente
             // ListOfThousendByte.Capacity enthält die grösse der Liste
 
+            List<byte> ListOfByteWithValues = new List<byte> { 5, 9, 2, 7, 3, 22, 19, 255, 0 };
+            // erstellt eine Liste welche bytes aufnehmen soll. Es werden direkt die ersten byte
+            // in die liste gepackt sodass man nicht ListOfByteWithValues.Add(5); schreiben muss
+
             LinkedList<byte> LinkedListOfByte = new LinkedList<byte>(); //erstellt eine LinkedList
             // dynamische länge, nicht hintereinander im RAM
             // Einfügen und löschen überall erlaubt
             // einzelne elemente aus der mitte der linked list lesen erfordert das vom anfang
             // element für element nach vorn gesprungen wird und ist daher langsam
+            // LinkedList<byte> LinkedListOfByte = new LinkedList<byte> { 5 , 7};
+            // geht bei linked lists nicht da diese nicht die werte direkt speichern sonder in
+            // kleinen hilfskontainern vom Typ LinkedListNode
+
 
             #endregion
 
