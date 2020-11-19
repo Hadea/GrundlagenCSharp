@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace TicTacToe
 {
@@ -37,6 +39,26 @@ namespace TicTacToe
         }
         static void Main()
         {
+            Console.CursorVisible = false;
+            List<string> logolines = new List<string>(); // erstellen eines lagers für die logo-zeilen
+            string readbuffer; //zwischenlager für eine gelesene Zeile
+            using (var sr = new StreamReader("Logo.txt")) // öffnen der Datei mit lesezugriff
+                while ((readbuffer = sr.ReadLine()) != null) // solange lesen bis NULL (dateiende) erreicht wird
+                    logolines.Add(readbuffer); // gelesene zeile im lager ablegen
+
+            Random rndGen = new Random();
+            for (int counter = 0; counter < logolines.Count; counter++)
+            {
+                // ausgabe zentrieren
+                Console.SetCursorPosition(Console.BufferWidth / 2 - logolines[counter].Length/2 ,
+                                          Console.WindowHeight/ 2 - logolines.Count/2 + counter);
+                Console.ForegroundColor = (ConsoleColor)rndGen.Next(1, 16);// zufällige farbe einstellen
+                Console.Write(logolines[counter]);// zeile ausgeben
+            }
+            Console.ReadKey(true); // auf irgendeinen tastenanschlag warten
+            Console.ResetColor();// farben zurücksetzen
+            Console.Clear();// bildschirm leeren
+
             string[] userNames = new string[2];
 
             Console.WriteLine("Hallo User, ich bin ein Spiel"); // ausgabe begrüssung
@@ -45,7 +67,7 @@ namespace TicTacToe
             Console.WriteLine("Spieler Y bitte name eingeben"); // ausgabe Spieler Y bitte name eingeben
             userNames[1] = Console.ReadLine();// eingabe von tastatur lesen und abspeichern
 
-            
+
             Spielfeld spiel = new Spielfeld();
             do // wiederholen
             {
