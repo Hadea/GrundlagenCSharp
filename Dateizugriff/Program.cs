@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
@@ -13,10 +14,17 @@ namespace Dateizugriff
         [NonSerialized] public bool geheim;
     }
 
-    public class Hund
+    // für den XML Serializer muss kein Attribut [Serializable] mit angegeben werden
+    public class Hund // die Klasse muss für den XML Serializer public sein
     {
         public string Name;
         public byte Alter;
+        public List<Bein> Beine;
+    }
+
+    public class Bein
+    {
+        public byte AnzahlKnochen;
     }
 
     class Program
@@ -31,8 +39,13 @@ namespace Dateizugriff
             Hund meinHund = new Hund();
             meinHund.Alter = 5;
             meinHund.Name = "Wuffi";
+            meinHund.Beine = new List<Bein>();
+            meinHund.Beine.Add(new Bein());
+            meinHund.Beine.Add(new Bein());
+            meinHund.Beine.Add(new Bein());
+            meinHund.Beine.Add(new Bein());
 
-            XmlSerializer formXML = new  XmlSerializer(typeof(Hund));
+            XmlSerializer formXML = new XmlSerializer(typeof(Hund));
 
             using (Stream datei = new FileStream("GespeicherterHund.xml", FileMode.Create, FileAccess.Write))
             {
@@ -41,6 +54,19 @@ namespace Dateizugriff
 
             Console.WriteLine("Hund gespeichert");
 
+            Hund geladenerHund;
+
+            using (Stream datei = new FileStream("GespeicherterHund.xml", FileMode.Open, FileAccess.Read))
+            {
+                geladenerHund = (Hund)formXML.Deserialize(datei);
+            }
+
+            if (meinHund.Alter == geladenerHund.Alter &&
+                meinHund.Beine.Count == geladenerHund.Beine.Count &&
+                meinHund.Beine[3].AnzahlKnochen == geladenerHund.Beine[3].AnzahlKnochen)
+            {
+                Console.WriteLine("Hund wurde erfolgreich geladen");
+            }
         }
 
         static void SaveAndLoadBinary()
