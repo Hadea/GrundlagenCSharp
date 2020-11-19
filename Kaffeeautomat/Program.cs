@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 namespace Kaffeeautomat
@@ -9,7 +10,12 @@ namespace Kaffeeautomat
         static void Main()
         {
             Console.CursorVisible = false;
-            Console.WriteLine("Hallo User, dies ist ein Kaffeeautomat\nKaffeemaschine wird gestartet");
+            Console.ForegroundColor = ConsoleColor.Red;
+            using (var sr = new StreamReader("Logo.txt"))
+                Console.Write(sr.ReadToEnd());
+            Console.ReadKey(true);
+            Console.ResetColor();
+            Console.Clear();
             CoffeeMashine coffeeMashine = new CoffeeMashine();
             ConsoleKey userInput;
             bool shutdownMashine = false;
@@ -46,7 +52,7 @@ namespace Kaffeeautomat
                             activeButtonID--;
                         break;
                     case ConsoleKey.DownArrow:
-                        if (activeButtonID < buttons.Length -1)
+                        if (activeButtonID < buttons.Length - 1)
                             activeButtonID++;
                         break;
 
@@ -91,7 +97,7 @@ namespace Kaffeeautomat
 
             } while (!shutdownMashine);
             Console.WriteLine("Kaffeeautomat wird beendet");
-            
+
         }
 
         static void DrawButtons(byte IdActiveButton, Button[] buttons)
@@ -100,7 +106,7 @@ namespace Kaffeeautomat
 
             for (int counter = 0; counter < buttons.Length; counter++)
             {
-                Console.SetCursorPosition(15, 5 + 2*counter);
+                Console.SetCursorPosition(15, 5 + 2 * counter);
 
                 if (counter == IdActiveButton)
                 {
