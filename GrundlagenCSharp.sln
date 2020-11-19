@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe", "TicTacToe\TicT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPSCounter", "FPSCounter\FPSCounter.csproj", "{74A89A14-D791-472C-B0FE-D1D44B25259C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sortieren", "Sortieren\Sortieren.csproj", "{E9BB6AEA-5B3E-4049-9105-110662325019}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sortieren", "Sortieren\Sortieren.csproj", "{E9BB6AEA-5B3E-4049-9105-110662325019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchleifenUebung", "SchleifenUebung\SchleifenUebung.csproj", "{6311B42D-00A6-46A6-9247-EC22E22F72D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchleifenUebung", "SchleifenUebung\SchleifenUebung.csproj", "{6311B42D-00A6-46A6-9247-EC22E22F72D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dateizugriff", "Dateizugriff\Dateizugriff.csproj", "{233F8936-581E-4014-82A0-79DF6BCAEFF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{6311B42D-00A6-46A6-9247-EC22E22F72D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6311B42D-00A6-46A6-9247-EC22E22F72D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6311B42D-00A6-46A6-9247-EC22E22F72D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
