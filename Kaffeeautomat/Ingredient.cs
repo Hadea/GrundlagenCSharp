@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kaffeeautomat
 {
-    struct Ingredient
+    public struct Ingredient
     {
         public Recipe RecipeName;
         public byte ContainerCoffee;

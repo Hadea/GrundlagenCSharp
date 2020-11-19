@@ -18,7 +18,6 @@ namespace Kaffeeautomat
             Console.Clear();
             CoffeeMashine coffeeMashine = new CoffeeMashine();
             ConsoleKey userInput;
-            bool shutdownMashine = false;
 
             Button[] buttons = new Button[5];
             buttons[0].Text = "Kaffee";
@@ -42,7 +41,8 @@ namespace Kaffeeautomat
             do
             {
                 Thread.Sleep(500);
-                DrawButtons(activeButtonID, buttons);
+                drawButtons(activeButtonID, buttons);
+                drawContainer(coffeeMashine);
                 userInput = Console.ReadKey(true).Key;
 
                 switch (userInput)
@@ -57,6 +57,7 @@ namespace Kaffeeautomat
                         break;
 
                     case ConsoleKey.Enter:
+                        Console.SetCursorPosition(0, 15);
                         Console.WriteLine("Ihr " + buttons[activeButtonID].Text + " wird zubereitet");
                         if (coffeeMashine.Dispense(buttons[activeButtonID].MachineValue))
                             Console.WriteLine("Ihr " + buttons[activeButtonID].Text + " ist Fertig");
@@ -82,7 +83,7 @@ namespace Kaffeeautomat
                         }
                         break;
                     case ConsoleKey.A:
-                        shutdownMashine = true;
+                        coffeeMashine.ShutDown();
                         break;
                     case ConsoleKey.W:
                         coffeeMashine.Maintenance();
@@ -95,12 +96,55 @@ namespace Kaffeeautomat
                         break;
                 }
 
-            } while (!shutdownMashine);
+            } while (coffeeMashine.GetState == MashineState.Running);
             Console.WriteLine("Kaffeeautomat wird beendet");
+
 
         }
 
-        static void DrawButtons(byte IdActiveButton, Button[] buttons)
+        static void drawContainer(CoffeeMashine Mashine)
+        {
+            //TODO: not very DRY!
+            Console.SetCursorPosition(0, 17);
+            Console.Write("Kaffee {0,3}% : ", Mashine.CCoffee);
+            for (int counter = 0; counter < 50; counter++)
+            {
+                Console.BackgroundColor = (Mashine.CCoffee/2 > counter?ConsoleColor.Blue : ConsoleColor.Black);
+                Console.Write(" ");
+            }
+            Console.ResetColor();
+            Console.Write("\nMilch {0,3}% :  ", Mashine.CMilk);
+            for (int counter = 0; counter <50; counter++)
+            {
+                Console.BackgroundColor = (Mashine.CMilk / 2 > counter ? ConsoleColor.Blue : ConsoleColor.Black);
+                Console.Write(" ");
+            }
+            Console.ResetColor();
+            Console.Write("\nWasser {0,3}% : ", Mashine.CWater);
+            for (int counter = 0; counter < 50; counter++)
+            {
+                Console.BackgroundColor = (Mashine.CWater / 2 > counter ? ConsoleColor.Blue : ConsoleColor.Black);
+                Console.Write(" ");
+            }
+            Console.ResetColor();
+            Console.Write("\nSatz {0,3}% :   ", Mashine.CWasteCoffee);
+            for (int counter = 0; counter < 50; counter++)
+            {
+                Console.BackgroundColor = (Mashine.CWasteCoffee / 2 > counter ? ConsoleColor.Blue : ConsoleColor.Black);
+                Console.Write(" ");
+            }
+            Console.ResetColor();
+            Console.Write("\nReste {0,3}% :  ", Mashine.CWasteWater);
+            for (int counter = 0; counter < 50; counter++)
+            {
+                Console.BackgroundColor = (Mashine.CWasteWater / 2 > counter ? ConsoleColor.Blue : ConsoleColor.Black);
+                Console.Write(" ");
+            }
+            Console.ResetColor();
+        }
+            
+
+        static void drawButtons(byte IdActiveButton, Button[] buttons)
         {
 
 

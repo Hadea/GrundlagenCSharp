@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace Kaffeeautomat
 {
@@ -13,7 +15,7 @@ namespace Kaffeeautomat
         byte containerWasteWater;
         byte containerMilk;
 
-        List<Ingredient> ingredients;
+        readonly List<Ingredient> ingredients;
 
         public byte CMilk
         {
@@ -36,12 +38,27 @@ namespace Kaffeeautomat
             get { return containerWasteCoffee; }
         }
 
-
+        public MashineState GetState { get; private set; }
 
         public CoffeeMashine()
         {
+            GetState = MashineState.Starting;
             ingredients = new List<Ingredient>();
+            MashineSettings ms;
+            var formatter = new XmlSerializer(typeof(MashineSettings));
+            using (var reader = new FileStream("MashineSettings.xml", FileMode.Open, FileAccess.Read))
+            {
+                ms = (MashineSettings)formatter.Deserialize(reader);
+            }
 
+            ingredients = ms.Ingredients;
+            containerCoffee = ms.containerCoffee;
+            containerWater = ms.containerWater;
+            containerWasteCoffee = ms.containerWasteCoffee;
+            containerWasteWater = ms.containerWasteWater;
+            containerMilk = ms.containerMilk;
+
+            /*
             Ingredient newIngredient;
             newIngredient.RecipeName = Recipe.Coffee;
             newIngredient.ContainerCoffee = 3;
@@ -83,8 +100,9 @@ namespace Kaffeeautomat
             newIngredient.ContainerMilk = 0;
             ingredients.Add(newIngredient);
 
-
-            Maintenance();
+            */
+            //Maintenance();
+            GetState = MashineState.Running;
         }
 
         public void Maintenance()
@@ -110,8 +128,8 @@ namespace Kaffeeautomat
 
             if (containerCoffee >= ingredients[counter].ContainerCoffee &&
                 containerWater >= ingredients[counter].ContainerWater &&
-                containerWasteWater <= ingredients[counter].ContainerWasteWater &&
-                containerWasteCoffee <= ingredients[counter].ContainerWasteCoffee &&
+                containerWasteWater <= 100 - ingredients[counter].ContainerWasteWater &&
+                containerWasteCoffee <= 100 - ingredients[counter].ContainerWasteCoffee &&
                 containerMilk >= ingredients[counter].ContainerMilk)
             {
                 System.Threading.Thread.Sleep(4000);
@@ -126,6 +144,28 @@ namespace Kaffeeautomat
             {
                 return false;
             }
+        }
+
+        internal void ShutDown()
+        {
+            MashineSettings ms = new MashineSettings
+            {
+                Ingredients = ingredients,
+                containerCoffee = containerCoffee,
+                containerWater = containerWater,
+                containerWasteCoffee = containerWasteCoffee,
+                containerWasteWater = containerWasteWater,
+                containerMilk = containerMilk
+            };
+
+            var formatter = new XmlSerializer(typeof(MashineSettings));
+            using (var writer = new FileStream("MashineSettings.xml", FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                formatter.Serialize(writer, ms);
+            }
+
+            // save settings
+            GetState = MashineState.Stopping;
         }
     }
 }

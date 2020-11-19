@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kaffeeautomat
 {
-    enum Recipe
+    public enum Recipe
     {
         Coffee,
         HotWater,
