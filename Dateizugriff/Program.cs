@@ -31,7 +31,33 @@ namespace Dateizugriff
     {
         static void Main(string[] args)
         {
-            SaveAndLoadXML();
+            //SaveAndLoadXML();
+            LoadText();
+        }
+
+        static void LoadText()
+        {
+            // liesst die gesamte datei ein und gibt sie auf die konsole aus
+            using (var reader = new StreamReader("Beispieltext.txt"))
+            {
+                string dateiinhalt = reader.ReadToEnd();
+                Console.WriteLine(dateiinhalt);
+            }
+
+            Console.ReadLine();
+            Console.Clear();
+
+            using (var reader = new StreamReader("Beispieltext.txt"))
+            {
+                string zeile;
+                while ( (zeile = reader.ReadLine()) != null )
+                {
+                    Console.WriteLine(zeile);
+                    Console.ReadLine();
+                }
+            }
+
+
         }
 
         static void SaveAndLoadXML()
