@@ -34,6 +34,9 @@ namespace Dateizugriff
             //SaveAndLoadBinary();
             //SaveAndLoadXML();
             LoadText("Beispieltext.txt");
+            //TODO: Direktes schreiben in eine Datei
+            //TODO: Laufweiten-Kompression
+
         }
 
         /// <summary>
