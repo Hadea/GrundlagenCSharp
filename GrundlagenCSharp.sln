@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchleifenUebung", "Schleife
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dateizugriff", "Dateizugriff\Dateizugriff.csproj", "{233F8936-581E-4014-82A0-79DF6BCAEFF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp9", "CSharp9\CSharp9.csproj", "{43FC87B7-BACE-476E-AEF2-9B0E4DC8F70F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{233F8936-581E-4014-82A0-79DF6BCAEFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43FC87B7-BACE-476E-AEF2-9B0E4DC8F70F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43FC87B7-BACE-476E-AEF2-9B0E4DC8F70F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43FC87B7-BACE-476E-AEF2-9B0E4DC8F70F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43FC87B7-BACE-476E-AEF2-9B0E4DC8F70F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

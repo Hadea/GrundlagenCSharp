@@ -43,7 +43,7 @@ namespace Kaffeeautomat
         public CoffeeMashine()
         {
             GetState = MashineState.Starting;
-            ingredients = new List<Ingredient>();
+
             MashineSettings ms;
             var formatter = new XmlSerializer(typeof(MashineSettings));
             using (var reader = new FileStream("MashineSettings.xml", FileMode.Open, FileAccess.Read))
@@ -159,7 +159,7 @@ namespace Kaffeeautomat
             };
 
             var formatter = new XmlSerializer(typeof(MashineSettings));
-            using (var writer = new FileStream("MashineSettings.xml", FileMode.OpenOrCreate, FileAccess.Write))
+            using (var writer = new FileStream("MashineSettings.xml", FileMode.Create, FileAccess.Write))
             {
                 formatter.Serialize(writer, ms);
             }
