@@ -1,19 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GameOfLife
 {
-    internal class Intro : Scene
+    class Intro : Scene
     {
+        readonly List<string> logoLines;
+        bool needsRedraw;
         public Intro()
         {
+            logoLines = new();
+            using (StreamReader reader = new("LogoBig.txt"))
+            {
+                string newLine;
+                while ( (newLine = reader.ReadLine()) != null)
+                {
+                    logoLines.Add(newLine);
+                }
+            }
+
             Console.Clear();
-            Console.WriteLine("Hallo, ich bin Game of Life");
+            needsRedraw = true;
         }
 
         public override void Update()
         {
-            if (Console.KeyAvailable)
+            if (needsRedraw)
             {
+                int row = 0;
+                for (; row < logoLines.Count; row++)
+                {
+                    Console.SetCursorPosition(Console.WindowWidth / 2 - logoLines[row].Length / 2, 2 + row);
+                    Console.Write(logoLines[row]);
+                }
+
+                string anyKey = "< press any key >";
+                row += 2;
+                Console.SetCursorPosition(Console.WindowWidth / 2 - anyKey.Length / 2, 2 + row);
+                Console.Write(anyKey);
+
+                needsRedraw = false;
+            }
+
+            if (Console.KeyAvailable) // prüft nur ob eine taste gerade unten ist, diese wird nicht aus liste der gedrückten tasten entfernt.
+            {
+                Console.ReadKey(true); // ohne readkey bleibt die gedrückte taste erhalten und das Hauptmneü reagiert bereits darauf.
                 Program.Scenes.Pop();
                 Program.Scenes.Push(new MainMenu());
             }
