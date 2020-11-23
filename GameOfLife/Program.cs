@@ -9,6 +9,8 @@ namespace GameOfLife
 
         static void Main()
         {
+            Console.CursorVisible = false;
+
             Scenes.Push(new Intro());
 
             do
