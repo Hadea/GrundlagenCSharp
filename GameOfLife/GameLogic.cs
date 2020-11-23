@@ -126,5 +126,20 @@ namespace GameOfLife
             return true;
         }
 
+        public bool SaveGame(string FileName)
+        {
+            StoredGame sg = new();
+            sg.Field = Field;
+            sg.Description = "New Savegame" + DateTime.Now.ToString();
+
+            XmlSerializer serializer = new(typeof(StoredGame));
+
+            using (Stream file = new FileStream(FileName, FileMode.Create, FileAccess.Write))
+            {
+                serializer.Serialize(file, sg);
+            }
+            return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
+        }
+
     }
 }
