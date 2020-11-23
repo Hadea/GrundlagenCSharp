@@ -49,7 +49,7 @@ namespace GameOfLife
             Console.SetCursorPosition((center? Console.WindowWidth / 2 - buttonText.Length / 2: 2), 2 + posY);
             Console.BackgroundColor = currentBackground;
             Console.ForegroundColor = currentForeground;
-            Console.Write(buttonText);
+            Console.Write(" {0} ",buttonText);
         }
 
         public Button(byte Row, bool Centered, string ButtonText)
@@ -59,9 +59,9 @@ namespace GameOfLife
             colorSelected = ConsoleColor.Gray;
             colorUnSelected = ConsoleColor.Black;
             colorActive = ConsoleColor.Green;
-            colorInactive = ConsoleColor.DarkGreen;
+            colorInactive = ConsoleColor.DarkGray;
             center = Centered;
-            states = ButtonStates.Available;
+            State = ButtonStates.Available;
         }
     }
 }

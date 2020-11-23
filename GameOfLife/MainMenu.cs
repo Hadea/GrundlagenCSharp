@@ -8,6 +8,7 @@ namespace GameOfLife
     {
         readonly List<string> logoLines;
         readonly List<Button> buttons;
+        readonly List<Button> inactiveButtons;
         readonly List<IDrawable> needsRedraw;
         private sbyte activeButton;
 
@@ -16,6 +17,11 @@ namespace GameOfLife
             get { return activeButton; }
             set
             {
+                if (activeButton == value)
+                {
+                    return;
+                }
+
                 buttons[activeButton].State = ButtonStates.Available;
                 needsRedraw.Add(buttons[activeButton]);
                 activeButton = value;
@@ -27,6 +33,7 @@ namespace GameOfLife
                 {
                     activeButton = 0;
                 }
+
                 buttons[activeButton].State = ButtonStates.Selected;
                 needsRedraw.Add(buttons[activeButton]);
             }
@@ -42,13 +49,19 @@ namespace GameOfLife
             {
                 new (10, true, "Random Game"),
                 new (12, true, "Predefined Game"),
-                new (14, true, "Load Game"),
                 new (16, true, "Quit Game")
             };
+            inactiveButtons = new List<Button>
+            {
+                new (14, true, "Load Game"),
+            };
 
-            buttons[2].State = ButtonStates.Inactive;
+
+
+            inactiveButtons[0].State = ButtonStates.Inactive;
 
             needsRedraw = new(buttons);
+            needsRedraw.AddRange(inactiveButtons);
             using (StreamReader reader = new("LogoSmall.txt"))
             {
                 string newLine;
@@ -91,7 +104,7 @@ namespace GameOfLife
                         break;
                     case ConsoleKey.Enter:
                         Program.Scenes.Push(new Game());
-                        // Todo: switch for buttonID to react to user choice
+                        // Todo: switch for buttonID to react to user choice or delegate!
                         break;
                 }
             }
