@@ -1,8 +1,10 @@
-﻿namespace GameOfLife
+﻿using System.Collections.Generic;
+
+namespace GameOfLife
 {
     public class StoredGame
     {
         public string Description;
-        public bool[,] Field;
+        public List<List<bool>> Field;
     }
 }

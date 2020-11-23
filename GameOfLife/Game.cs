@@ -22,15 +22,23 @@ namespace GameOfLife
             {
                 for (int X = 0; X < arrayToDraw.GetLength(1); X++)
                 {
-                    Console.Write("{0}", (arrayToDraw[Y, X] ? "O": "_") ) ;
+                    Console.Write("{0}", (arrayToDraw[Y,X] ? "O" : "_"));
                 }
                 Console.WriteLine();
             }
 
-            if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape)
+            if (Console.KeyAvailable)
             {
-                Program.Scenes.Pop();
-                return;
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.Escape:
+                        Program.Scenes.Pop();
+                        return;
+                    case ConsoleKey.S: // spiel speichern
+                        logic.SaveGame("GameA.xml");
+                        break;
+                }
+
             }
 
             if ((DateTime.Now - lastLogicUpdate).TotalMilliseconds > 500)
