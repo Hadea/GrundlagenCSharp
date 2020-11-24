@@ -17,6 +17,7 @@ namespace GameOfLife
         ConsoleColor currentForeground;
         ConsoleColor currentBackground;
         readonly bool center;
+        readonly Action method; // Vorbereiteter Delegate ohne Parameter und ohne Rückgabe
 
         private ButtonStates states;
 
@@ -46,13 +47,13 @@ namespace GameOfLife
 
         public void Draw()
         {
-            Console.SetCursorPosition((center? Console.WindowWidth / 2 - buttonText.Length / 2 - 1: 2), posY);
+            Console.SetCursorPosition((center ? Console.WindowWidth / 2 - buttonText.Length / 2 - 1 : 2), posY);
             Console.BackgroundColor = currentBackground;
             Console.ForegroundColor = currentForeground;
-            Console.Write(" {0} ",buttonText);
+            Console.Write(" {0} ", buttonText);
         }
 
-        public Button(byte Row, bool Centered, string ButtonText)
+        public Button(byte Row, bool Centered, string ButtonText, Action MethodToExecute)
         {
             posY = Row;
             buttonText = ButtonText;
@@ -62,6 +63,12 @@ namespace GameOfLife
             colorInactive = ConsoleColor.DarkGray;
             center = Centered;
             State = ButtonStates.Available;
+            method = MethodToExecute;
+        }
+
+        public void Execute()
+        {
+            method();
         }
     }
 }

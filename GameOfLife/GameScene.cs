@@ -1,21 +1,40 @@
 ﻿using System;
 namespace GameOfLife
 {
-    internal class Game : Scene
+    internal class GameScene : Scene
     {
         readonly GameLogic logic;
         DateTime lastLogicUpdate;
+        readonly BoardLabel[,] boardLabels;
 
-        public Game()
+        public GameScene()
         {
             lastLogicUpdate = DateTime.Now;
             logic = new();
+            boardLabels = new BoardLabel[logic.Field.GetLength(0), logic.Field.GetLength(1)];
+
+            int offset = Console.WindowWidth / 2 - boardLabels.GetLength(1);
+            for (int row = 0; row < boardLabels.GetLength(0); row++)
+            {
+                for (int col = 0; col < boardLabels.GetLength(1); col++)
+                {
+                    boardLabels[row, col] = new(row, offset + col * 2);
+                }
+            }
+        }
+
+        public GameScene(string item)
+        {
         }
 
         public override void Activate()
         {
             Console.ResetColor();
-            Console.Clear();           
+            Console.Clear();
+            foreach (var item in boardLabels)
+            {
+                Program.NeedsRedraw.Add(item);
+            }
         }
 
         public override void Update()
@@ -27,9 +46,8 @@ namespace GameOfLife
             {
                 for (int X = 0; X < arrayToDraw.GetLength(1); X++)
                 {
-                    Console.Write("{0}", (arrayToDraw[Y,X] ? "O" : "_"));
+                    boardLabels[Y, X].Alive = arrayToDraw[Y, X];
                 }
-                Console.WriteLine();
             }
 
             if (Console.KeyAvailable)
@@ -37,7 +55,7 @@ namespace GameOfLife
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.Escape:
-                        Program.RemoveScene();
+                        Program.SceneRemove();
                         return;
                     case ConsoleKey.S: // spiel speichern
                         logic.SaveGame("GameA.xml");

@@ -49,8 +49,8 @@ namespace GameOfLife
             if (Console.KeyAvailable) // prüft nur ob eine taste gerade unten ist, diese wird nicht aus liste der gedrückten tasten entfernt.
             {
                 Console.ReadKey(true); // ohne readkey bleibt die gedrückte taste erhalten und das Hauptmneü reagiert bereits darauf.
-                Program.RemoveScene();
-                Program.AddScene(new MainMenu());
+                Program.SceneRemove();
+                Program.SceneAdd(new MainMenu());
             }
         }
     }
