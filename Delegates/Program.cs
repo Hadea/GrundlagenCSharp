@@ -77,7 +77,10 @@ namespace Delegates
             // Die in Execute referenzierte Methode wird gestartet
             meinButton.Execute(4, 7);
 
+            // Hier wird dem Konstruktor die referenz zur methode Addition mitgegeben
             ButtonDel meinButton2 = new ButtonDel(Addition);
+
+            // die im button hinterlegte Methode wird gestartet.
             meinButton2.Execute(7, 9);
         }
     }
