@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Datentypen
 {
@@ -146,6 +147,16 @@ namespace Datentypen
             List<byte[]> ListOfByteArrays = new List<byte[]>();
             List<LinkedList<List<string[]>>>[] VielZuVerschachtelt = new List<LinkedList<List<string[]>>>[20];
             // der verschachtelung sind keine grenzen gesetzt
+
+            // konvertierung eines Mehrdimensionalen Arrays in List (sehr langsam)
+            List<int> IntegerList = MehrdimensionalesIntArray.Cast<int>().ToList();
+
+            // etwas schnellerer weg der konvertierung.
+            int[] tempArray = new int[MehrdimensionalesIntArray.Length];
+            // BlockCopy kopiert einen Speicherbereich auf einen anderen
+            // letzter parameter will wissen wieviele Bytes kopiert werden sollen. Hier nicht die elementanzahl eintragen, sondern echte grösse ausrechnen.
+            Buffer.BlockCopy(MehrdimensionalesIntArray, 0, tempArray, 0, tempArray.Length * sizeof(int));
+            IntegerList = tempArray.ToList();
 
         } // ende Main
 
