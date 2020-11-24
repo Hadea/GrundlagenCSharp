@@ -17,13 +17,12 @@ namespace GameOfLife
             get { return activeButton; }
             set
             {
-                if (activeButton == value)
+                if (activeButton != value)
                 {
-                    return;
+                    buttons[activeButton].State = ButtonStates.Available;
+                    needsRedraw.Add(buttons[activeButton]);
                 }
 
-                buttons[activeButton].State = ButtonStates.Available;
-                needsRedraw.Add(buttons[activeButton]);
                 activeButton = value;
                 if (activeButton < 0)
                 {
@@ -42,7 +41,7 @@ namespace GameOfLife
 
         public MainMenu()
         {
-            
+
             buttons = new List<Button>
             {
                 new (12, true, "Random Game"),
@@ -80,7 +79,7 @@ namespace GameOfLife
                 {
                     item.Draw();
                 }
-                needsRedraw.Clear(); 
+                needsRedraw.Clear();
             }
 
             // prüfen ob es neue Eingaben vom Nutzer gibt
