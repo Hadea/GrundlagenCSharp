@@ -19,7 +19,10 @@ namespace GameOfLife
                     logoLines.Add(newLine);
                 }
             }
+        }
 
+        public override void Activate()
+        {
             Console.Clear();
             needsRedraw = true;
         }
@@ -46,8 +49,8 @@ namespace GameOfLife
             if (Console.KeyAvailable) // prüft nur ob eine taste gerade unten ist, diese wird nicht aus liste der gedrückten tasten entfernt.
             {
                 Console.ReadKey(true); // ohne readkey bleibt die gedrückte taste erhalten und das Hauptmneü reagiert bereits darauf.
-                Program.Scenes.Pop();
-                Program.Scenes.Push(new MainMenu());
+                Program.RemoveScene();
+                Program.AddScene(new MainMenu());
             }
         }
     }

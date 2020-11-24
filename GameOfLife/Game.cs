@@ -8,11 +8,16 @@ namespace GameOfLife
 
         public Game()
         {
-            Console.ResetColor();
-            Console.Clear();
             lastLogicUpdate = DateTime.Now;
             logic = new();
         }
+
+        public override void Activate()
+        {
+            Console.ResetColor();
+            Console.Clear();           
+        }
+
         public override void Update()
         {
             Console.SetCursorPosition(0, 0);
@@ -32,7 +37,7 @@ namespace GameOfLife
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.Escape:
-                        Program.Scenes.Pop();
+                        Program.RemoveScene();
                         return;
                     case ConsoleKey.S: // spiel speichern
                         logic.SaveGame("GameA.xml");

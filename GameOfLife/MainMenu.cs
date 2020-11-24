@@ -6,7 +6,7 @@ namespace GameOfLife
 {
     internal class MainMenu : Scene
     {
-        readonly List<string> logoLines;
+        readonly List<Label> labels;
         readonly List<Button> buttons;
         readonly List<Button> inactiveButtons;
         readonly List<IDrawable> needsRedraw;
@@ -42,9 +42,7 @@ namespace GameOfLife
 
         public MainMenu()
         {
-            Console.ResetColor();
-            Console.Clear();
-            logoLines = new();
+            
             buttons = new List<Button>
             {
                 new (10, true, "Random Game"),
@@ -56,39 +54,36 @@ namespace GameOfLife
                 new (14, true, "Load Game"),
             };
 
-
-
             inactiveButtons[0].State = ButtonStates.Inactive;
 
-            needsRedraw = new(buttons);
-            needsRedraw.AddRange(inactiveButtons);
+            needsRedraw = new();
+            labels = new();
             using (StreamReader reader = new("LogoSmall.txt"))
             {
+                List<string> logoLines = new();
                 string newLine;
                 while ((newLine = reader.ReadLine()) != null)
                 {
                     logoLines.Add(newLine);
                 }
+                labels.Add(new Label(1, true, logoLines));
             }
 
             ActiveButtonID = 0;
         }
         public override void Update()
         {
-            foreach (var item in needsRedraw)
+            //prüfen ob etwas neu gezeichnet werden muss
+            if (needsRedraw.Count > 0)
             {
-                item.Draw();
-            }
-            needsRedraw.Clear();
-
-            int row = 0;
-            Console.ResetColor();
-            for (; row < logoLines.Count; row++)
-            {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - logoLines[row].Length / 2, 2 + row);
-                Console.Write(logoLines[row]);
+                foreach (var item in needsRedraw)
+                {
+                    item.Draw();
+                }
+                needsRedraw.Clear(); 
             }
 
+            // prüfen ob es neue Eingaben vom Nutzer gibt
             if (Console.KeyAvailable)
             {
                 switch (Console.ReadKey(true).Key)
@@ -100,14 +95,23 @@ namespace GameOfLife
                         ActiveButtonID++;
                         break;
                     case ConsoleKey.Escape:
-                        Program.Scenes.Pop();
+                        Program.RemoveScene();
                         break;
                     case ConsoleKey.Enter:
-                        Program.Scenes.Push(new Game());
+                        Program.AddScene(new Game());
                         // Todo: switch for buttonID to react to user choice or delegate!
                         break;
                 }
             }
+        }
+
+        public override void Activate()
+        {
+            Console.ResetColor();
+            Console.Clear();
+            needsRedraw.AddRange(inactiveButtons);
+            needsRedraw.AddRange(buttons);
+            needsRedraw.AddRange(labels);
         }
     }
 }

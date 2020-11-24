@@ -46,7 +46,7 @@ namespace GameOfLife
 
         public void Draw()
         {
-            Console.SetCursorPosition((center? Console.WindowWidth / 2 - buttonText.Length / 2: 2), 2 + posY);
+            Console.SetCursorPosition((center? Console.WindowWidth / 2 - buttonText.Length / 2 + 2: 2), 2 + posY);
             Console.BackgroundColor = currentBackground;
             Console.ForegroundColor = currentForeground;
             Console.Write(" {0} ",buttonText);
