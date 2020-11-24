@@ -147,6 +147,9 @@ namespace Datentypen
             List<byte[]> ListOfByteArrays = new List<byte[]>();
             List<LinkedList<List<string[]>>>[] VielZuVerschachtelt = new List<LinkedList<List<string[]>>>[20];
             // der verschachtelung sind keine grenzen gesetzt
+            ListOfByteArrays[0][0] = 2;
+            VielZuVerschachtelt[0][0].First.Value[0][0] = "hallo";
+
 
             // konvertierung eines Mehrdimensionalen Arrays in List (sehr langsam)
             List<int> IntegerList = MehrdimensionalesIntArray.Cast<int>().ToList();
