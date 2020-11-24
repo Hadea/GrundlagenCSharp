@@ -45,13 +45,13 @@ namespace GameOfLife
             
             buttons = new List<Button>
             {
-                new (10, true, "Random Game"),
-                new (12, true, "Predefined Game"),
-                new (16, true, "Quit Game")
+                new (12, true, "Random Game"),
+                new (14, true, "Predefined Game"),
+                new (18, true, "Quit Game")
             };
             inactiveButtons = new List<Button>
             {
-                new (14, true, "Load Game"),
+                new (16, true, "Load Game"),
             };
 
             inactiveButtons[0].State = ButtonStates.Inactive;

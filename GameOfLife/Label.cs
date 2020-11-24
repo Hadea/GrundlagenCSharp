@@ -6,8 +6,8 @@ namespace GameOfLife
     class Label : IDrawable
     {
         readonly List<string> TextLines;
-        byte posY;
-        bool center;
+        readonly byte posY;
+        readonly bool center;
         public Label(byte Row, bool Centered, List<string> Text)
         {
             posY = Row;
@@ -20,7 +20,7 @@ namespace GameOfLife
             Console.ResetColor();
             for (int row = 0; row < TextLines.Count; row++)
             {
-                Console.SetCursorPosition(Console.WindowWidth / 2 - TextLines[row].Length / 2, 2 + row);
+                Console.SetCursorPosition( (center? Console.WindowWidth / 2 - TextLines[row].Length / 2 : 2), posY + row);
                 Console.Write(TextLines[row]);
             }
         }
