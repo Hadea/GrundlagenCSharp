@@ -16,7 +16,7 @@ namespace Delegates
 
     class ButtonDel
     {
-        readonly private MathematischeOperation befehl; // private variante der Variable welche mit dem Konstruktor befüllt wird
+        readonly public MathematischeOperation befehl; // private variante der Variable welche mit dem Konstruktor befüllt wird
 
         // Konstruktor-Methode welche als Parameter eine Referenz zu einer Methode verlangt.
         public ButtonDel(MathematischeOperation operation)
@@ -35,6 +35,12 @@ namespace Delegates
             return -1;
         }
     }
+
+    class ActionButton
+    {
+        public Action befehl; // entspricht dem Typ:  public delegate void Action ();
+    }
+
     class Program
     {
         // eine Methode die exakt den Anforderungen des Delegate entspricht
@@ -82,6 +88,46 @@ namespace Delegates
 
             // die im button hinterlegte Methode wird gestartet.
             meinButton2.Execute(7, 9);
+
+            // erstellt ein Objekt vom Typ Action
+            ActionButton meinActionButton = new ActionButton();
+            
+            // trägt die referenz zur Methode in der Variable ein
+            meinActionButton.befehl = meineVoidMethode;
+            // fügt eine weitere Methode hinzu, diesmal in Lambda-Schreibweise
+            // Diese hier hat keinen Rückgabewert, keinen Namen und keine Parameter
+            // Da sie auch nur einen befehl enthält können sogar geschweifte klammern und semikolon entfernt werden.
+            meinActionButton.befehl += () => Console.WriteLine("Lambda Methode wurde gestartet");
+
+            // wenn ein Lambda mehr als einen befehl enthält werden die geschweiften Klammern benötigt und die
+            // befehle werden wie üblich mit semikolon beendet
+            meinActionButton.befehl += () => { Console.Write("Lambda Methode "); Console.WriteLine("mit mehreren Befehlen"); };
+            // führt alle Methoden aus welche in befehl gespeichert sind
+            // die Variable befehl vom typ Action (delegate ohne parameter und rückgabe) verhält sich wie eine
+            // Liste aus Methodenreferenzen welche beim ausführen mit einer foreach durchgegangen wird.
+            meinActionButton.befehl();
+
+
+            // erstellt einen neuen Button welcher eine Methode als parameter für den Konstruktor haben will
+            // auch hier können Lambdas verwendet werden.
+            // Dieses Lambda kann zwei parameter empfangen und intern benutzen, wie normale methoden auch.
+            // der Datentyp der Parameter kann dabei weggelassen werden
+            // Ausgeschrieben als normale methode:   int MeinLambda(int A, int B) { return A/B;}
+            ButtonDel meinDritterButton = new ButtonDel( (A,B) => { return A / B; } );
+
+            int h = 5;
+            int o = 7;
+            // starten der Methoden welche in befehl eingetragen sind, hier bisher nur eine.
+            // die parameter werden der reihe nach an jede der Methoden (oder Lambdas) weitergereicht
+            // und nacheinander ausgeführt. Vorsicht mit Referenzen und rückgaben.
+            Console.WriteLine(meinDritterButton.befehl(h,o));
+
+            Console.ReadLine();
+        }
+
+        static void meineVoidMethode()
+        {
+            Console.WriteLine("Void Methode wurde gestartet");
         }
     }
 }
