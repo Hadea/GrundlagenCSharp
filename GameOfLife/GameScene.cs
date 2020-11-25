@@ -23,8 +23,22 @@ namespace GameOfLife
             }
         }
 
-        public GameScene(string item)
+        public GameScene(string FileName)
         {
+            lastLogicUpdate = DateTime.Now;
+            logic = new();
+            logic.LoadGame(FileName);
+
+            boardLabels = new BoardLabel[logic.Field.GetLength(0), logic.Field.GetLength(1)];
+
+            int offset = Console.WindowWidth / 2 - boardLabels.GetLength(1);
+            for (int row = 0; row < boardLabels.GetLength(0); row++)
+            {
+                for (int col = 0; col < boardLabels.GetLength(1); col++)
+                {
+                    boardLabels[row, col] = new(row, offset + col * 2);
+                }
+            }
         }
 
         public override void Activate()

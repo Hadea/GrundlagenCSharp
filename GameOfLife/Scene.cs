@@ -35,8 +35,6 @@ namespace GameOfLife
             }
         }
 
-
-
         public abstract void Update();
 
         public abstract void Activate();

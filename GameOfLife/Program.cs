@@ -5,7 +5,7 @@ namespace GameOfLife
 {
     class Program
     {
-        static readonly Stack<Scene> scenes = new(); //TODO: Methoden schreiben für einfügen, lesen und entfernen von szenen. Dann Stack verstecken
+        static private readonly Stack<Scene> scenes = new();
         static public readonly List<IDrawable> NeedsRedraw = new();
 
         public static void SceneAdd(Scene NewScene)

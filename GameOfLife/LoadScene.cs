@@ -15,7 +15,7 @@ namespace GameOfLife
 
             foreach (var item in fileNames)
             {
-                buttons.Add(new Button(row += 2, false, item, () => { Program.SceneRemove(); Program.SceneAdd(new GameScene(item)); }));
+                buttons.Add(new Button(row += 2, false, item.Substring(2,item.Length-2-4), () => { Program.SceneRemove(); Program.SceneAdd(new GameScene(item)); }));
             }
 
             buttons.Add(new Button(row += 2, false, "Back", () => Program.SceneRemove()));
@@ -23,8 +23,8 @@ namespace GameOfLife
 
         public override void Activate()
         {
-            Console.Clear();
             Console.ResetColor();
+            Console.Clear();
             Program.NeedsRedraw.AddRange(buttons);
         }
 
@@ -38,6 +38,13 @@ namespace GameOfLife
                         Program.SceneRemove();
                         break;
                     case ConsoleKey.Enter:
+                        buttons[ActiveButtonID].Execute();
+                        break;
+                    case ConsoleKey.UpArrow:
+                        ActiveButtonID--;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        ActiveButtonID++;
                         break;
                     
                 }

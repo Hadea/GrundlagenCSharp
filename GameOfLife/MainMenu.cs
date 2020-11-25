@@ -8,17 +8,12 @@ namespace GameOfLife
     {
         readonly List<Label> labels;
 
-        void EventNewGame()
-        {
-            Program.SceneAdd(new GameScene());
-        }
-
         public MainMenu()
         {
             byte row = 12;
             buttons = new List<Button>
             {
-                new (row, true, "Random Game", EventNewGame),
+                new (row, true, "Random Game", () => Program.SceneAdd(new GameScene())),
                 new (row+=2, true, "Predefined Game", () => Program.SceneAdd(new GameScene())),
                 new (row+=2, true, "Load Game", () => Program.SceneAdd(new LoadScene())),
                 new (row+=2, true, "Quit Game", () => Program.SceneRemove())
