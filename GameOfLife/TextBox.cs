@@ -12,7 +12,7 @@ namespace GameOfLife
 
         public string Text
         {
-            get { return content.ToString(); }
+            get { return content.ToString().Trim(); }
         }
 
 
@@ -24,7 +24,7 @@ namespace GameOfLife
             {
                 content[count] = Text[count];
             }
-            cursorPosition = count;
+            cursorPosition = count;//TODO: what if array is full?
             for (; count < content.Length; count++)
             {
                 content[count] = ' ';
@@ -52,10 +52,11 @@ namespace GameOfLife
             {
                 case ConsoleKey.Delete:
                     Array.Fill(content, ' ');
+                    cursorPosition = 0;
                     Program.NeedsRedraw.Add(this);
                     break;
                 case ConsoleKey.Backspace:
-                    content[cursorPosition--] = ' ';
+                    content[--cursorPosition] = ' ';
                     Program.NeedsRedraw.Add(this);
                     break;
                 case ConsoleKey.LeftArrow:
