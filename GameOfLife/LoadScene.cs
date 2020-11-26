@@ -11,42 +11,42 @@ namespace GameOfLife
         {
             string[] fileNames = Directory.GetFiles(@".\", "*.xml");
             byte row = 4;
-            buttons = new List<Button>();
+            uiElements = new List<UIElement>();
 
             foreach (var item in fileNames)
             {
-                buttons.Add(new Button(row += 2, false, item.Substring(2,item.Length-2-4), () => { Program.SceneRemove(); Program.SceneAdd(new GameScene(item)); }));
+                uiElements.Add(new Button(row += 2, false, item.Substring(2,item.Length-2-4), () => { Program.SceneRemove(); Program.SceneAdd(new GameScene(item)); }));
             }
 
-            buttons.Add(new Button(row += 2, false, "Back", () => Program.SceneRemove()));
+            uiElements.Add(new Button(row += 2, false, "Back", () => Program.SceneRemove()));
         }
 
         public override void Activate()
         {
             Console.ResetColor();
             Console.Clear();
-            Program.NeedsRedraw.AddRange(buttons);
+            Program.NeedsRedraw.AddRange(uiElements);
         }
 
         public override void Update()
         {
             if (Console.KeyAvailable)
             {
-                switch (Console.ReadKey(true).Key)
+                var pressedKey = Console.ReadKey(true);
+                switch (pressedKey.Key)
                 {
                     case ConsoleKey.Escape:
                         Program.SceneRemove();
                         break;
-                    case ConsoleKey.Enter:
-                        buttons[ActiveButtonID].Execute();
-                        break;
                     case ConsoleKey.UpArrow:
-                        ActiveButtonID--;
+                        selectedElementID--;
                         break;
                     case ConsoleKey.DownArrow:
-                        ActiveButtonID++;
+                        selectedElementID++;
                         break;
-                    
+                    default:
+                        uiElements[selectedElementID].ProcessKey(pressedKey);
+                        break;
                 }
             }
         }

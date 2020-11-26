@@ -69,11 +69,8 @@ namespace GameOfLife
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.Escape:
-                        Program.SceneRemove();
+                        Program.SceneAdd(new IngameMenu(logic));
                         return;
-                    case ConsoleKey.S: // spiel speichern
-                        logic.SaveGame("GameA.xml");
-                        break;
                 }
 
             }

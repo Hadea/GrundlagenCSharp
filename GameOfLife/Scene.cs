@@ -5,33 +5,33 @@ namespace GameOfLife
 {
     abstract class Scene
     {
-        protected List<Button> buttons;
+        protected List<UIElement> uiElements;
         protected sbyte activeButton;
 
-        public sbyte ActiveButtonID
+        public sbyte selectedElementID
         {
             get { return activeButton; }
             set
             {
                 if (activeButton != value)
                 {
-                    buttons[activeButton].State = ButtonStates.Available;
-                    Program.NeedsRedraw.Add(buttons[activeButton]);
+                    uiElements[activeButton].State = ButtonStates.Available;
+                    Program.NeedsRedraw.Add(uiElements[activeButton]);
                 }
 
                 activeButton = value;
                 // TODO: replace with search for next active button
                 if (activeButton < 0)
                 {
-                    activeButton = (sbyte)(buttons.Count - 1);
+                    activeButton = (sbyte)(uiElements.Count - 1);
                 }
-                else if (activeButton == buttons.Count)
+                else if (activeButton == uiElements.Count)
                 {
                     activeButton = 0;
                 }
 
-                buttons[activeButton].State = ButtonStates.Selected;
-                Program.NeedsRedraw.Add(buttons[activeButton]);
+                uiElements[activeButton].State = ButtonStates.Selected;
+                Program.NeedsRedraw.Add(uiElements[activeButton]);
             }
         }
 

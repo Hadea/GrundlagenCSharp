@@ -10,18 +10,19 @@ namespace GameOfLife
 
         public static void SceneAdd(Scene NewScene)
         {
+            NeedsRedraw.Clear();//HACK: shouldn't be filled!
             scenes.Push(NewScene);// Neue Szene auf den Stapel an Szenen legen
             NewScene.Activate(); // Neue Szene aktivieren
         }
 
-        public static Scene SceneRemove()
+        public static void SceneRemove()
         {
-            Scene temp = scenes.Pop(); // Szene vom Szenenstapel entfernen
+            NeedsRedraw.Clear();//HACK: shouldn't be filled!
+            scenes.Pop(); // Szene vom Szenenstapel entfernen
             if (scenes.Count > 0) // Nachschauen ob noch Szenen vorhanden sind
             {
                 scenes.Peek().Activate(); // falls noch eine Szene vorhanden ist diese Aktivieren.
             }
-            return temp;
         }
 
         static void Main()

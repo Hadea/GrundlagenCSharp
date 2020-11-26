@@ -37,8 +37,6 @@ namespace GameOfLife
             fieldFalse = new bool[20, 30];
             fieldTrue = new bool[20, 30];
             activeField = false;
-
-
             reset();
         }
 

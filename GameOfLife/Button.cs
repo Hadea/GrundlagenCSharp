@@ -6,46 +6,18 @@ using System.Threading.Tasks;
 
 namespace GameOfLife
 {
-    class Button : IDrawable
+    class Button : UIElement
     {
         readonly string buttonText;
-        readonly byte posY;
         readonly ConsoleColor colorSelected;
         readonly ConsoleColor colorUnSelected;
         readonly ConsoleColor colorActive;
         readonly ConsoleColor colorInactive;
         ConsoleColor currentForeground;
         ConsoleColor currentBackground;
-        readonly bool center;
         readonly Action method; // Vorbereiteter Delegate ohne Parameter und ohne Rückgabe
 
-        private ButtonStates states;
-
-        public ButtonStates State
-        {
-            get { return states; }
-            set
-            {
-                states = value;
-                switch (states)
-                {
-                    case ButtonStates.Selected:
-                        currentBackground = colorSelected;
-                        currentForeground = colorActive;
-                        break;
-                    case ButtonStates.Available:
-                        currentBackground = colorUnSelected;
-                        currentForeground = colorActive;
-                        break;
-                    case ButtonStates.Inactive:
-                        currentBackground = colorUnSelected;
-                        currentForeground = colorInactive;
-                        break;
-                }
-            }
-        }
-
-        public void Draw()
+        public override void Draw()
         {
             Console.SetCursorPosition((center ? Console.WindowWidth / 2 - buttonText.Length / 2 - 1 : 2), posY);
             Console.BackgroundColor = currentBackground;
@@ -53,22 +25,55 @@ namespace GameOfLife
             Console.Write(" {0} ", buttonText);
         }
 
-        public Button(byte Row, bool Centered, string ButtonText, Action MethodToExecute)
+        public Button(byte Row, bool Centered, string ButtonText, Action MethodToExecute) : base(Row, Centered)
         {
-            posY = Row;
             buttonText = ButtonText;
             colorSelected = ConsoleColor.Gray;
             colorUnSelected = ConsoleColor.Black;
             colorActive = ConsoleColor.Green;
             colorInactive = ConsoleColor.DarkGray;
-            center = Centered;
-            State = ButtonStates.Available;
-            method = MethodToExecute;
+
+            OnStateChanged = StateChanged;
+
+            if (MethodToExecute == null)
+            {
+                State = ButtonStates.Inactive;
+            }
+            else
+            {
+                State = ButtonStates.Available;
+                method = MethodToExecute;
+            }
         }
 
-        public void Execute()
+        public override void ProcessKey(ConsoleKeyInfo KeyInfo)
         {
-            method();
+            if (KeyInfo.Key == ConsoleKey.Enter)
+            {
+                if (State is ButtonStates.Available or ButtonStates.Selected && method != null)
+                {
+                    method();
+                }
+            }
+        }
+
+        void StateChanged()
+        {
+            switch (State)
+            {
+                case ButtonStates.Selected:
+                    currentBackground = colorSelected;
+                    currentForeground = colorActive;
+                    break;
+                case ButtonStates.Available:
+                    currentBackground = colorUnSelected;
+                    currentForeground = colorActive;
+                    break;
+                case ButtonStates.Inactive:
+                    currentBackground = colorUnSelected;
+                    currentForeground = colorInactive;
+                    break;
+            }
         }
     }
 }

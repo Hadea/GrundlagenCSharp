@@ -11,12 +11,12 @@ namespace GameOfLife
         public MainMenu()
         {
             byte row = 12;
-            buttons = new List<Button>
+            uiElements = new List<UIElement>
             {
-                new (row, true, "Random Game", () => Program.SceneAdd(new GameScene())),
-                new (row+=2, true, "Predefined Game", () => Program.SceneAdd(new GameScene())),
-                new (row+=2, true, "Load Game", () => Program.SceneAdd(new LoadScene())),
-                new (row+=2, true, "Quit Game", () => Program.SceneRemove())
+                new Button(row, true, "Random Game", () => Program.SceneAdd(new GameScene())),
+                new Button(row+=2, true, "Predefined Game", () => Program.SceneAdd(new GameScene())),
+                new Button(row+=2, true, "Load Game", () => Program.SceneAdd(new LoadScene())),
+                new Button(row+=2, true, "Quit Game", () => Program.SceneRemove())
             };
 
             labels = new();
@@ -31,27 +31,27 @@ namespace GameOfLife
                 labels.Add(new Label(1, true, logoLines));
             }
 
-            ActiveButtonID = 0;
+            selectedElementID = 0;
         }
         public override void Update()
         {
             // prüfen ob es neue Eingaben vom Nutzer gibt
             if (Console.KeyAvailable)
             {
-                switch (Console.ReadKey(true).Key)
+                ConsoleKeyInfo pressedKey = Console.ReadKey(true);
+                switch (pressedKey.Key)
                 {
                     case ConsoleKey.UpArrow:
-                        ActiveButtonID--;
+                        selectedElementID--;
                         break;
                     case ConsoleKey.DownArrow:
-                        ActiveButtonID++;
+                        selectedElementID++;
                         break;
                     case ConsoleKey.Escape:
                         Program.SceneRemove();
                         break;
-                    case ConsoleKey.Enter:
-                        buttons[ActiveButtonID].Execute();
-                        // Todo: switch for buttonID to react to user choice or delegate!
+                    default:
+                        uiElements[selectedElementID].ProcessKey(pressedKey);
                         break;
                 }
             }
@@ -61,7 +61,7 @@ namespace GameOfLife
         {
             Console.ResetColor();
             Console.Clear();
-            Program.NeedsRedraw.AddRange(buttons);
+            Program.NeedsRedraw.AddRange(uiElements);
             Program.NeedsRedraw.AddRange(labels);
         }
     }
