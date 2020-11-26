@@ -135,7 +135,71 @@ namespace GameOfLife
             return true;
         }
 
-        public bool SaveGame(string FileName)
+        public bool SaveGame(string FileName, StoredGameVersion Version)
+        {
+            switch (Version)
+            {
+                case StoredGameVersion.Ascii:
+                    break;
+                case StoredGameVersion.AsciiXML:
+                    SaveGameXML(FileName);
+                    break;
+                case StoredGameVersion.AsciiCompressed:
+                    break;
+                case StoredGameVersion.Binary:
+                    break;
+                case StoredGameVersion.BinarySerialized:
+                    break;
+                default:
+                    break;
+            }
+
+
+            return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
+        }
+
+        void SaveGameAscii(string FileName)
+        {
+            using (StreamWriter writer = new(FileName + ".gol"))
+            {
+                writer.WriteLine("GOLA");// Game Of Life ASCII
+                writer.WriteLine(Field.GetLength(0));// Y
+                writer.WriteLine(Field.GetLength(1));// X
+                for (int row = 0; row < Field.GetLength(0); row++)
+                {
+                    for (int col = 0; col < Field.GetLength(1); col++)
+                    {
+                        writer.Write((Field[row, col] ? "1" : "0"));
+                    }
+                    writer.WriteLine();
+                }
+                writer.Write("Spielname und datum... demnächst vom nutzer befüllt");
+            }
+        }
+
+        bool LoadGameAscii(string FileName)
+        {
+            using (StreamReader reader = new(FileName))
+            {
+                if (reader.ReadLine() != "GOLA") return false; // early exit,  testen ob wir das richtige format haben.
+                if (!byte.TryParse(reader.ReadLine(), out byte Y)) return false;
+                if (!byte.TryParse(reader.ReadLine(), out byte X)) return false;
+                fieldFalse = new bool[Y, X];
+                for (int row = 0; row < Y; row++)
+                {
+                    string line = reader.ReadLine();
+                    for (int col = 0; col < X; col++)
+                    {
+                        fieldFalse[row, col] = (line[col] == '1' ? true : false);
+                    }
+                }
+
+                //TODO: read description of savegame
+            }
+            return true;
+        }
+
+        void SaveGameXML(string FileName)
         {
             StoredGame sg = new();
             List<List<bool>> convertedField = new();
@@ -149,7 +213,6 @@ namespace GameOfLife
                 }
             }
 
-
             sg.Field = convertedField;
             sg.Description = "New Savegame" + DateTime.Now.ToString();
 
@@ -159,8 +222,6 @@ namespace GameOfLife
             {
                 serializer.Serialize(file, sg);
             }
-            return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
         }
-
     }
 }
