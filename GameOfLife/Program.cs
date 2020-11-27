@@ -30,17 +30,16 @@ namespace GameOfLife
         static void Main(string[] CommandLineParameters)
         {
             Console.CursorVisible = false;
+            Environment.CurrentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
 
             if (CommandLineParameters.Length > 0) // Hack: check if more than one argument is given -> error
             {
-                Environment.CurrentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
                 SceneAdd(new MainMenu());
                 SceneAdd(new GameScene(CommandLineParameters[0]));
                 SceneAdd(new Intro());
             }
             else
             {
-                Environment.CurrentDirectory = Directory.GetParent(Environment.CommandLine).ToString();
                 SceneAdd(new MainMenu());
                 SceneAdd(new Intro());
             }
