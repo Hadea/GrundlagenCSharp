@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace GameOfLife
 {
@@ -30,14 +31,9 @@ namespace GameOfLife
         {
             Console.CursorVisible = false;
 
-
-            if (CommandLineParameters.Length == 1) // Hack: check if more than one argument is given -> error
+            if (CommandLineParameters.Length > 0) // Hack: check if more than one argument is given -> error
             {
-                string directoryPath = Environment.CommandLine;
-                directoryPath = directoryPath[..directoryPath.IndexOf(CommandLineParameters[0])];
-                directoryPath = Directory.GetParent(directoryPath).ToString();
-
-                Environment.CurrentDirectory = directoryPath;
+                Environment.CurrentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
                 SceneAdd(new MainMenu());
                 SceneAdd(new GameScene(CommandLineParameters[0]));
                 SceneAdd(new Intro());
