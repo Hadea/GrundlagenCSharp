@@ -29,14 +29,27 @@ namespace Dateizugriff
 
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
             //SaveAndLoadBinary();
             //SaveAndLoadXML();
-            LoadText("Beispieltext.txt");
+            //LoadText("Beispieltext.txt");
             //TODO: Direktes schreiben in eine Datei
             //TODO: Laufweiten-Kompression
 
+            Environment.CurrentDirectory = Directory.GetParent(Environment.CommandLine).ToString();
+
+            Console.WriteLine("Parameter:");
+            Console.ReadLine();
+            foreach (var item in args)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine("CommandLine: " + Environment.CommandLine);
+
+            Console.WriteLine("Logo-Path : "+ Directory.GetParent(Environment.CommandLine)+ @"\Logo.txt");
+            Console.ReadLine();
         }
 
         /// <summary>
