@@ -50,7 +50,6 @@ namespace GameOfLife
             {
                 Console.ReadKey(true); // ohne readkey bleibt die gedrückte taste erhalten und das Hauptmneü reagiert bereits darauf.
                 Program.SceneRemove();
-                Program.SceneAdd(new MainMenu());
             }
         }
     }

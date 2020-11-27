@@ -25,10 +25,22 @@ namespace GameOfLife
             }
         }
 
-        static void Main()
+        static void Main(string[] CommandLineParameters)
         {
             Console.CursorVisible = false;
-            SceneAdd(new Intro());
+
+            if (CommandLineParameters.Length == 1) // Hack: check if more than one argument is given -> error
+            {
+                SceneAdd(new MainMenu());
+                SceneAdd(new GameScene(CommandLineParameters[0]));
+                SceneAdd(new Intro());
+            }
+            else
+            {
+                SceneAdd(new MainMenu());
+                SceneAdd(new Intro());
+            }
+
 
             do
             {
