@@ -113,6 +113,33 @@ namespace GameOfLife
                 return false;
             }
 
+            string magic; // read first 4 chars
+            using (StreamReader reader = new StreamReader(FileName))
+            {
+                magic = reader.ReadLine()[..4]; //HACK: read only 4 bytes, do not rely on CRLF
+            }
+
+            switch (magic)
+            {
+                case "GOLA":
+                    loadGameAscii(FileName);
+                    break;
+                case "<?xm":
+                    loadGameXML(FileName);
+                    break;
+                case "GOLB":
+                    throw new NotImplementedException();
+                case "GOLC":
+                    throw new NotImplementedException();
+                default:
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool loadGameXML(string FileName)
+        {
             XmlSerializer serializer = new(typeof(StoredGame));
             StoredGame sg;
 
@@ -130,26 +157,28 @@ namespace GameOfLife
                 }
             }
 
-
             fieldFalse = convertedField;
-            return true;
+            return true; // HACK: test!
         }
-
         public bool SaveGame(string FileName, StoredGameVersion Version)
         {
             switch (Version)
             {
                 case StoredGameVersion.Ascii:
+                    saveGameAscii(FileName);
                     break;
                 case StoredGameVersion.AsciiXML:
-                    SaveGameXML(FileName);
+                    saveGameXML(FileName);
                     break;
                 case StoredGameVersion.AsciiCompressed:
-                    break;
+                    throw new NotImplementedException();
+                    //break;
                 case StoredGameVersion.Binary:
-                    break;
+                    throw new NotImplementedException();
+                    //break;
                 case StoredGameVersion.BinarySerialized:
-                    break;
+                    throw new NotImplementedException();
+                    //break;
                 default:
                     break;
             }
@@ -158,7 +187,7 @@ namespace GameOfLife
             return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
         }
 
-        void SaveGameAscii(string FileName)
+        void saveGameAscii(string FileName)
         {
             using (StreamWriter writer = new(FileName + ".gol"))
             {
@@ -177,20 +206,28 @@ namespace GameOfLife
             }
         }
 
-        bool LoadGameAscii(string FileName)
+        /// <summary>
+        /// Loads a stored game from disk and initializes the game
+        /// </summary>
+        /// <param name="FileName">Full path, name and extension of file</param>
+        /// <returns>True if game loads successfully, otherwise false.</returns>
+        bool loadGameAscii(string FileName)
         {
             using (StreamReader reader = new(FileName))
             {
                 if (reader.ReadLine() != "GOLA") return false; // early exit,  testen ob wir das richtige format haben.
+
                 if (!byte.TryParse(reader.ReadLine(), out byte Y)) return false;
                 if (!byte.TryParse(reader.ReadLine(), out byte X)) return false;
                 fieldFalse = new bool[Y, X];
+                fieldTrue = new bool[Y, X];
+                activeField = false;
                 for (int row = 0; row < Y; row++)
                 {
                     string line = reader.ReadLine();
                     for (int col = 0; col < X; col++)
                     {
-                        fieldFalse[row, col] = (line[col] == '1' ? true : false);
+                        fieldFalse[row, col] = line[col] == '1';
                     }
                 }
 
@@ -199,7 +236,7 @@ namespace GameOfLife
             return true;
         }
 
-        void SaveGameXML(string FileName)
+        void saveGameXML(string FileName)
         {
             StoredGame sg = new();
             List<List<bool>> convertedField = new();

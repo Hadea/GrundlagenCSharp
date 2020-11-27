@@ -6,16 +6,19 @@ namespace GameOfLife
 {
     class LoadScene : Scene
     {
-        GameScene preview; //TODO load file for preview, just constructor, no update or activate
+        //GameScene preview; //TODO load file for preview, just constructor, no update or activate
         public LoadScene()
         {
-            string[] fileNames = Directory.GetFiles(@".\", "*.xml");
+            List<string> fileNames = new();
+            fileNames.AddRange( Directory.GetFiles(@".\", "*.xml"));
+            fileNames.AddRange( Directory.GetFiles(@".\", "*.gol"));
+            
             byte row = 4;
             uiElements = new List<UIElement>();
 
             foreach (var item in fileNames)
             {
-                uiElements.Add(new Button(row += 2, false, item.Substring(2,item.Length-2-4), () => { Program.SceneRemove(); Program.SceneAdd(new GameScene(item)); }));
+                uiElements.Add(new Button(row += 2, false, item.Substring(2,item.Length-2), () => { Program.SceneRemove(); Program.SceneAdd(new GameScene(item)); }));
             }
 
             uiElements.Add(new Button(row += 2, false, "Back", () => Program.SceneRemove()));

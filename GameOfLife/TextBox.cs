@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Drawing;
-using System.Text;
 
 namespace GameOfLife
 {
     class TextBox : UIElement
     {
-        private char[] content;
+        private readonly char[] content;
         private readonly ConsoleColor color;
         private byte cursorPosition;
 
-        public string Text
+        public override string ToString()
         {
-            get { return content.ToString().Trim(); }
+            return new string(content).Trim();
         }
-
 
         public TextBox(byte Row, bool Centered, string Text = "") : base(Row, Centered)
         {
