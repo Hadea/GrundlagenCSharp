@@ -9,13 +9,13 @@ namespace GameOfLife
     class Button : UIElement
     {
         readonly string buttonText;
-        readonly ConsoleColor colorSelected;
-        readonly ConsoleColor colorUnSelected;
-        readonly ConsoleColor colorActive;
-        readonly ConsoleColor colorInactive;
-        ConsoleColor currentForeground;
-        ConsoleColor currentBackground;
-        readonly Action method; // Vorbereiteter Delegate ohne Parameter und ohne Rückgabe
+        readonly protected ConsoleColor colorSelected;
+        readonly protected ConsoleColor colorUnSelected;
+        readonly protected ConsoleColor colorActive;
+        readonly protected ConsoleColor colorInactive;
+        protected ConsoleColor currentForeground;
+        protected ConsoleColor currentBackground;
+        protected Action method; // Vorbereiteter Delegate ohne Parameter und ohne Rückgabe
 
         public override void Draw()
         {

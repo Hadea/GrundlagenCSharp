@@ -15,7 +15,8 @@ namespace GameOfLife
             {
                 new Button(row, true, "Random Game", () => Program.SceneAdd(new GameScene())),
                 new Button(row+=2, true, "Predefined Game", () => Program.SceneAdd(new GameScene())),
-                new Button(row+=2, true, "Load Game", () => Program.SceneAdd(new LoadScene())),
+                new Button(row+=2, true, "Load Game", () => Program.SceneAdd(new LoadScene(false))),
+                new Button(row+=2, true, "Edit Game", () => Program.SceneAdd(new LoadScene(true))),
                 new Button(row+=2, true, "Quit Game", () => Program.SceneRemove())
             };
 

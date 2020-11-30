@@ -32,6 +32,11 @@ namespace GameOfLife
             //(activeField ? fieldFalse : fieldTrue)[Y, X] = value;
         }
 
+        public void FlipValue(int row, int col)
+        {
+            fieldFalse[row, col] = !fieldFalse[row, col];
+        }
+
         public GameLogic()
         {
             fieldFalse = new bool[20, 30];

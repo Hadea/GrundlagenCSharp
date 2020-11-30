@@ -5,10 +5,10 @@ namespace GameOfLife
 {
     abstract class Scene
     {
-        protected List<UIElement> uiElements;
-        protected sbyte activeButton;
+        protected List<UIElement> uiElements = new List<UIElement>();
+        protected short activeButton;
 
-        public sbyte selectedElementID
+        public short selectedElementID
         {
             get { return activeButton; }
             set
@@ -25,7 +25,7 @@ namespace GameOfLife
                 {
                     activeButton = (sbyte)(uiElements.Count - 1);
                 }
-                else if (activeButton == uiElements.Count)
+                else if (activeButton > uiElements.Count - 1)
                 {
                     activeButton = 0;
                 }
