@@ -8,7 +8,12 @@ namespace Speech
         static void Main()
         {
             SpeechSynthesizer synth = new SpeechSynthesizer();
-            synth.SelectVoice("Microsoft Hedda Desktop"); // namen der stimmen können mit GetInstalledVoices() herausgefunden werden. englisch geht immer
+            foreach (var item in synth.GetInstalledVoices()) // zeigt die namen aller installierten stimmen an
+            {
+                Console.WriteLine(item.VoiceInfo.Name);
+            }
+
+            synth.SelectVoice("Microsoft Hedda Desktop"); 
             synth.Speak("Hallo Welt");
             Console.ReadLine();
         }
