@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessUI", "BusinessUI\Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessTest", "BusinessTest\BusinessTest.csproj", "{849B86B7-687F-4137-A95F-DF8AA1EA521D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speech", "Speech\Speech.csproj", "{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{849B86B7-687F-4137-A95F-DF8AA1EA521D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{849B86B7-687F-4137-A95F-DF8AA1EA521D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{849B86B7-687F-4137-A95F-DF8AA1EA521D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
