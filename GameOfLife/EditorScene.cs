@@ -4,7 +4,7 @@ namespace GameOfLife
 {
     internal class EditorScene : Scene
     {
-        readonly GameLogic logic;
+        readonly GameOfLifeLogic.GameLogic logic;
 
         public EditorScene(string FileName)
         {

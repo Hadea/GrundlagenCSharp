@@ -1,4 +1,5 @@
 ﻿using System;
+using GameOfLifeLogic;
 
 namespace GameOfLife
 {

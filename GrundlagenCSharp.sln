@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessTest", "BusinessTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speech", "Speech\Speech.csproj", "{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLifeLogic", "GameOfLifeLogic\GameOfLifeLogic.csproj", "{E2BE6ECA-4FB1-4E12-8517-A0C17E895828}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26D8AD64-DB06-4E63-ADC0-23C602DC8D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2BE6ECA-4FB1-4E12-8517-A0C17E895828}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2BE6ECA-4FB1-4E12-8517-A0C17E895828}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2BE6ECA-4FB1-4E12-8517-A0C17E895828}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2BE6ECA-4FB1-4E12-8517-A0C17E895828}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

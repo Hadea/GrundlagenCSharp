@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameOfLifeLogic\GameOfLifeLogic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="LogoBig.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -3,7 +3,7 @@ namespace GameOfLife
 {
     internal class GameScene : Scene
     {
-        readonly GameLogic logic;
+        readonly GameOfLifeLogic.GameLogic logic;
         DateTime lastLogicUpdate;
         readonly BoardLabel[,] boardLabels;
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace GameOfLife
+namespace GameOfLifeLogic
 {
-    internal class GameLogic
+    public class GameLogic
     {
         bool[,] fieldFalse;
         bool[,] fieldTrue;

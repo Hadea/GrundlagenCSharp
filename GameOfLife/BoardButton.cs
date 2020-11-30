@@ -22,7 +22,7 @@ namespace GameOfLife
             }
         }
 
-        public BoardButton(byte ScreenY, byte ScreenX, byte CoordY, byte CoordX, GameLogic Logic) : base(ScreenY, false, "  ", null)
+        public BoardButton(byte ScreenY, byte ScreenX, byte CoordY, byte CoordX, GameOfLifeLogic.GameLogic Logic) : base(ScreenY, false, "  ", null)
         {
             coordX = CoordX;
             coordY = CoordY;

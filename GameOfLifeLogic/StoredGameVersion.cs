@@ -1,6 +1,6 @@
-﻿namespace GameOfLife
+﻿namespace GameOfLifeLogic
 {
-    enum StoredGameVersion
+    public enum StoredGameVersion
     {
         Ascii,
         AsciiXML,
