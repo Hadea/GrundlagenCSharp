@@ -5,9 +5,9 @@ namespace GameOfLife
     internal class BoardButton : Button
     {
         private bool alive;
-        readonly byte posX;
-        byte coordY;
-        byte coordX;
+        private readonly byte posX;
+        private readonly byte coordY;
+        private readonly byte coordX;
 
         public bool Alive
         {
@@ -28,7 +28,7 @@ namespace GameOfLife
             coordY = CoordY;
             posX = ScreenX;
 
-            method = () => { Logic.FlipValue(coordY, coordX);  Program.NeedsRedraw.Add(this); };//HACK: call not working?
+            method = () =>  Alive = Logic.FlipValue(coordY, coordX);
         }
 
         public override void Draw()
@@ -42,8 +42,7 @@ namespace GameOfLife
             {
                 Console.BackgroundColor = (alive ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed);
             }
-            Console.Write("  ");
+            Console.Write(buttonText);
         }
-
     }
 }

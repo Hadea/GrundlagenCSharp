@@ -8,11 +8,11 @@ namespace GameOfLife
 {
     class Button : UIElement
     {
-        readonly string buttonText;
-        readonly protected ConsoleColor colorSelected;
-        readonly protected ConsoleColor colorUnSelected;
-        readonly protected ConsoleColor colorActive;
-        readonly protected ConsoleColor colorInactive;
+        protected readonly string buttonText;
+        protected readonly ConsoleColor colorSelected;
+        protected readonly ConsoleColor colorUnSelected;
+        protected readonly ConsoleColor colorActive;
+        protected readonly ConsoleColor colorInactive;
         protected ConsoleColor currentForeground;
         protected ConsoleColor currentBackground;
         protected Action method; // Vorbereiteter Delegate ohne Parameter und ohne Rückgabe
@@ -33,7 +33,7 @@ namespace GameOfLife
             colorActive = ConsoleColor.Green;
             colorInactive = ConsoleColor.DarkGray;
 
-            OnStateChanged = StateChanged;
+            OnStateChanged = stateChanged;
 
             if (MethodToExecute == null)
             {
@@ -57,7 +57,7 @@ namespace GameOfLife
             }
         }
 
-        void StateChanged()
+        void stateChanged()
         {
             switch (State)
             {
