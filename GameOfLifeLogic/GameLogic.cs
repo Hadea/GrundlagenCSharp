@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -117,7 +118,8 @@ namespace GameOfLifeLogic
         {
             if (!File.Exists(FileName))
             {
-                return false;
+                loadGameDatabase(FileName);
+                return false;//todo check!
             }
 
             string magic; // read first 4 chars
@@ -146,22 +148,71 @@ namespace GameOfLifeLogic
             return true;
         }
 
+        private void loadGameDatabase(string FileName)
+        {
+            SQLiteConnectionStringBuilder builder = new();
+            builder.Version = 3;
+            builder.DataSource = "SaveGames.db";
+
+            using (SQLiteConnection connection = new(builder.ToString()))
+            {
+                connection.Open();
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = "select Height, Width, Field from SaveGames where Name = @name";//todo select statement
+                command.Parameters.AddWithValue("@name", FileName);
+
+
+                int y;
+                int x;
+                SQLiteBlob blob;
+                byte[] byteArray;
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+
+                    reader.Read();// nur die erste zeile der rückgabe.
+                    y = reader.GetInt32(0);
+                    x = reader.GetInt32(1);
+                    blob = reader.GetBlob(2, true);
+                }
+
+                byteArray = new byte[blob.GetCount()];
+                blob.Read(byteArray, blob.GetCount(), 0);
+                BitArray bits = new(byteArray);
+
+                fieldFalse = new bool[y, x];
+                fieldTrue = new bool[y, x];
+                activeField = false;
+
+                for (int row = 0; row < y; row++)
+                {
+                    for (int col = 0; col < x; col++)
+                    {
+                        fieldFalse[row, col] = bits[row * x + col];
+                    }
+                }
+            }
+        }
+
         private void loadGameBinary(string FileName)
         {
             using (BinaryReader reader = new(File.OpenRead(FileName)))
             {
                 reader.ReadChars(4); // überspringen der bereits geprüften magic number
-                byte Y = reader.ReadByte();
-                byte X = reader.ReadByte();
+                byte y = reader.ReadByte();
+                byte x = reader.ReadByte();
 
-                byte[] bytes = reader.ReadBytes((Y*X-1) / 8 + 1);
+                fieldFalse = new bool[y, x];
+                fieldTrue = new bool[y, x];
+                activeField = false;
+
+                byte[] bytes = reader.ReadBytes((y * x - 1) / 8 + 1);
                 BitArray bits = new BitArray(bytes);
-                
-                for (int row = 0; row < Field.GetLength(0); row++)
+
+                for (int row = 0; row < y; row++)
                 {
-                    for (int col = 0; col < Field.GetLength(1); col++)
+                    for (int col = 0; col < x; col++)
                     {
-                        fieldFalse[row, col] = bits[row * Field.GetLength(0) + col];
+                        fieldFalse[row, col] = bits[row * x + col];
                     }
                 }
             }
@@ -199,21 +250,66 @@ namespace GameOfLifeLogic
                 case StoredGameVersion.AsciiXML:
                     saveGameXML(FileName);
                     break;
-                case StoredGameVersion.AsciiCompressed:
-                    throw new NotImplementedException();
-                //break;
                 case StoredGameVersion.Binary:
                     saveGameBinary(FileName);
                     break;
-                case StoredGameVersion.BinarySerialized:
-                    throw new NotImplementedException();
-                //break;
-                default:
+                case StoredGameVersion.Database:
+                    saveGameDatabase(FileName);
                     break;
+                default:
+                    throw new NotImplementedException();
             }
 
-
             return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
+        }
+
+        private void saveGameDatabase(string FileName)
+        {
+            //TODO: check if database file exists
+            SQLiteConnectionStringBuilder builder = new();
+            builder.Version = 3;
+            builder.DataSource = "SaveGames.db";
+            if (!File.Exists(builder.DataSource)) // wenn die Datenbank noch nicht existiert soll sie erstellt werden
+            {
+                // bei sqlite ist das erstellen der datenbank, falls sie noch nicht exisitert ok
+                // NIEMALS bei Datenbankservern! Nie! Nada! NULL! VOID! Gar nich! 404! Nööööö!
+                using (SQLiteConnection connection = new(builder.ToString()))
+                {
+                    connection.Open(); // Open erstellt automatisch die datenbank wenn sie nicht da ist, es fehlen nur die tabellen.
+                    SQLiteCommand command = connection.CreateCommand();
+                    command.CommandText = "create table SaveGames (ID integer not null primary key, Name varchar(15) not null unique , Height integer not null, Width integer not null, Field blob not null)";
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            using (SQLiteConnection connection = new(builder.ToString()))
+            {
+                connection.Open();
+                SQLiteCommand command = connection.CreateCommand();
+                command.CommandText = "replace into SaveGames (Name, Height, Width, Field) values (@name, @height, @width, @field)";//todo insert statement
+
+                BitArray bits = new BitArray(Field.GetLength(0) * Field.GetLength(1));
+                for (int row = 0; row < Field.GetLength(0); row++)
+                {
+                    for (int col = 0; col < Field.GetLength(1); col++)
+                    {
+                        bits[row * Field.GetLength(1) + col] = Field[row, col];
+                    }
+                }
+                byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
+                bits.CopyTo(bytes, 0);
+
+                command.Parameters.AddWithValue("@name", FileName);
+                command.Parameters.AddWithValue("@height", Field.GetLength(0));
+                command.Parameters.AddWithValue("@width", Field.GetLength(1));
+                command.Parameters.AddWithValue("@field", bytes);
+
+                int linesAffected = command.ExecuteNonQuery();
+                if (linesAffected == 0)
+                {
+                    throw new IOException();
+                }
+            }
         }
 
         private void saveGameBinary(string FileName)

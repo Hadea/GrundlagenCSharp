@@ -6,6 +6,7 @@
         AsciiXML,
         AsciiCompressed,
         Binary,
-        BinarySerialized
+        BinarySerialized,
+        Database
     }
 }
