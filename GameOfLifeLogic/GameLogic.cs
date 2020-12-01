@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
@@ -134,7 +135,8 @@ namespace GameOfLifeLogic
                     loadGameXML(FileName);
                     break;
                 case "GOLB":
-                    throw new NotImplementedException();
+                    loadGameBinary(FileName);
+                    break;
                 case "GOLC":
                     throw new NotImplementedException();
                 default:
@@ -142,6 +144,27 @@ namespace GameOfLifeLogic
             }
 
             return true;
+        }
+
+        private void loadGameBinary(string FileName)
+        {
+            using (BinaryReader reader = new(File.OpenRead(FileName)))
+            {
+                reader.ReadChars(4); // überspringen der bereits geprüften magic number
+                byte Y = reader.ReadByte();
+                byte X = reader.ReadByte();
+
+                byte[] bytes = reader.ReadBytes((Y*X-1) / 8 + 1);
+                BitArray bits = new BitArray(bytes);
+                
+                for (int row = 0; row < Field.GetLength(0); row++)
+                {
+                    for (int col = 0; col < Field.GetLength(1); col++)
+                    {
+                        fieldFalse[row, col] = bits[row * Field.GetLength(0) + col];
+                    }
+                }
+            }
         }
 
         bool loadGameXML(string FileName)
@@ -178,19 +201,40 @@ namespace GameOfLifeLogic
                     break;
                 case StoredGameVersion.AsciiCompressed:
                     throw new NotImplementedException();
-                    //break;
+                //break;
                 case StoredGameVersion.Binary:
-                    throw new NotImplementedException();
-                    //break;
+                    saveGameBinary(FileName);
+                    break;
                 case StoredGameVersion.BinarySerialized:
                     throw new NotImplementedException();
-                    //break;
+                //break;
                 default:
                     break;
             }
 
 
             return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
+        }
+
+        private void saveGameBinary(string FileName)
+        {
+            using (BinaryWriter writer = new(File.Open(FileName + ".gol", FileMode.Create)))
+            {
+                writer.Write("GOLB".ToCharArray());
+                writer.Write((byte)Field.GetLength(0));
+                writer.Write((byte)Field.GetLength(1));
+                BitArray bits = new BitArray(Field.GetLength(0) * Field.GetLength(1));
+                for (int row = 0; row < Field.GetLength(0); row++)
+                {
+                    for (int col = 0; col < Field.GetLength(1); col++)
+                    {
+                        bits[row * Field.GetLength(0) + col] = Field[row, col];
+                    }
+                }
+                byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
+                bits.CopyTo(bytes, 0);
+                writer.Write(bytes);
+            }
         }
 
         void saveGameAscii(string FileName)

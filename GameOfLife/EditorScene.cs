@@ -26,6 +26,7 @@ namespace GameOfLife
             else
             {
                 Console.WriteLine("Spiel konnte nicht geladen werden");
+                throw new FormatException();
             }
         }
 
