@@ -228,7 +228,7 @@ namespace GameOfLifeLogic
                 {
                     for (int col = 0; col < Field.GetLength(1); col++)
                     {
-                        bits[row * Field.GetLength(0) + col] = Field[row, col];
+                        bits[row * Field.GetLength(1) + col] = Field[row, col];
                     }
                 }
                 byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
