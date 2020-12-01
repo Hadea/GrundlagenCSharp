@@ -53,7 +53,7 @@ namespace GameOfLife
                     Program.NeedsRedraw.Add(this);
                     break;
                 case ConsoleKey.Backspace:
-                    content[--cursorPosition] = ' ';
+                    content[--cursorPosition] = ' '; //TODO: out of range exception möglich!
                     Program.NeedsRedraw.Add(this);
                     break;
                 case ConsoleKey.LeftArrow:
