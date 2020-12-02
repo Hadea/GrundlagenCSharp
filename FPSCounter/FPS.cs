@@ -21,9 +21,12 @@ namespace FPSCounter
             framesSinceLastUpdate++;
             if ((DateTime.Now - lastUpdate).TotalMilliseconds >= 1000)
             {
-                Console.SetCursorPosition(0, 0);
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("{0,8} fps", framesSinceLastUpdate );
+                char[] output = $"{framesSinceLastUpdate} fps".ToCharArray();
+                for (int counter = 0; counter < output.Length; counter++)
+                {
+                    Program.ScreenBuffer[counter].Char.UnicodeChar = output[counter];
+                    Program.ScreenBuffer[counter].Attributes = 0x02 | 0x04 | 0x08;
+                }
                 framesSinceLastUpdate = 0;
                 lastUpdate = DateTime.Now;
             }
