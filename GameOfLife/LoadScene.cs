@@ -12,19 +12,26 @@ namespace GameOfLife
         public LoadScene(bool LoadForEdit)
         {
             editMode = LoadForEdit;
-            List<string> fileNames = new();
-            fileNames.AddRange(Directory.GetFiles(@".\", "*.xml"));
-            fileNames.AddRange(Directory.GetFiles(@".\", "*.gol"));
+
+            var fileNames = GameOfLifeLogic.GameLogic.GetAvailableGames();
 
             byte row = 4;
             uiElements = new List<UIElement>();
 
             foreach (var item in fileNames)
             {
-                uiElements.Add(new Button(row += 2, false, item.Substring(2, item.Length - 2), () => startLevel(item)));
+                if (item.FromDatabase)
+                {
+                    uiElements.Add(new Button(row += 2, false, "DB " + item.Name, () => startLevel(item.Name)));
+                }
+                else
+                {
+                    uiElements.Add(new Button(row += 2, false, "FL " + item.Name.Substring(2, item.Name.Length - 2 - 4), () => startLevel(item.Name)));
+                }
             }
 
             uiElements.Add(new Button(row += 2, false, "Back", () => Program.SceneRemove()));
+            selectedElementID = 0;
         }
 
         public override void Activate()

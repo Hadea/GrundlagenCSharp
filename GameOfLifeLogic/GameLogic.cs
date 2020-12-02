@@ -119,7 +119,7 @@ namespace GameOfLifeLogic
             if (!File.Exists(FileName))
             {
                 loadGameDatabase(FileName);
-                return false;//todo check!
+                return true;//todo check!
             }
 
             string magic; // read first 4 chars
@@ -154,41 +154,38 @@ namespace GameOfLifeLogic
             builder.Version = 3;
             builder.DataSource = "SaveGames.db";
 
+            int y;
+            int x;
+            SQLiteBlob blob;
             using (SQLiteConnection connection = new(builder.ToString()))
             {
                 connection.Open();
                 SQLiteCommand command = connection.CreateCommand();
-                command.CommandText = "select Height, Width, Field from SaveGames where Name = @name";//todo select statement
+                command.CommandText = "select Height, Width, Field from SaveGames where Name = @name;";//todo select statement
                 command.Parameters.AddWithValue("@name", FileName);
 
-
-                int y;
-                int x;
-                SQLiteBlob blob;
-                byte[] byteArray;
-                using (SQLiteDataReader reader = command.ExecuteReader())
+                using (SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.KeyInfo))
                 {
-
                     reader.Read();// nur die erste zeile der rückgabe.
                     y = reader.GetInt32(0);
                     x = reader.GetInt32(1);
                     blob = reader.GetBlob(2, true);
                 }
+            }
 
-                byteArray = new byte[blob.GetCount()];
-                blob.Read(byteArray, blob.GetCount(), 0);
-                BitArray bits = new(byteArray);
+            byte[] byteArray = new byte[blob.GetCount()];
+            blob.Read(byteArray, blob.GetCount(), 0);
+            BitArray bits = new(byteArray);
 
-                fieldFalse = new bool[y, x];
-                fieldTrue = new bool[y, x];
-                activeField = false;
+            fieldFalse = new bool[y, x];
+            fieldTrue = new bool[y, x];
+            activeField = false;
 
-                for (int row = 0; row < y; row++)
+            for (int row = 0; row < y; row++)
+            {
+                for (int col = 0; col < x; col++)
                 {
-                    for (int col = 0; col < x; col++)
-                    {
-                        fieldFalse[row, col] = bits[row * x + col];
-                    }
+                    fieldFalse[row, col] = bits[row * x + col];
                 }
             }
         }
@@ -282,23 +279,22 @@ namespace GameOfLifeLogic
                 }
             }
 
+            BitArray bits = new BitArray(Field.GetLength(0) * Field.GetLength(1));
+            for (int row = 0; row < Field.GetLength(0); row++)
+            {
+                for (int col = 0; col < Field.GetLength(1); col++)
+                {
+                    bits[row * Field.GetLength(1) + col] = Field[row, col];
+                }
+            }
+            byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
+            bits.CopyTo(bytes, 0);
+
             using (SQLiteConnection connection = new(builder.ToString()))
             {
                 connection.Open();
                 SQLiteCommand command = connection.CreateCommand();
-                command.CommandText = "replace into SaveGames (Name, Height, Width, Field) values (@name, @height, @width, @field)";//todo insert statement
-
-                BitArray bits = new BitArray(Field.GetLength(0) * Field.GetLength(1));
-                for (int row = 0; row < Field.GetLength(0); row++)
-                {
-                    for (int col = 0; col < Field.GetLength(1); col++)
-                    {
-                        bits[row * Field.GetLength(1) + col] = Field[row, col];
-                    }
-                }
-                byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
-                bits.CopyTo(bytes, 0);
-
+                command.CommandText = "replace into SaveGames (Name, Height, Width, Field) values (@name, @height, @width, @field);";//todo insert statement
                 command.Parameters.AddWithValue("@name", FileName);
                 command.Parameters.AddWithValue("@height", Field.GetLength(0));
                 command.Parameters.AddWithValue("@width", Field.GetLength(1));
@@ -405,6 +401,44 @@ namespace GameOfLifeLogic
             {
                 serializer.Serialize(file, sg);
             }
+        }
+
+        public static List<(string Name, bool FromDatabase)> GetAvailableGames()
+        {
+            List<string> fileNames = new();
+            fileNames.AddRange(Directory.GetFiles(@".\", "*.xml"));
+            fileNames.AddRange(Directory.GetFiles(@".\", "*.gol"));
+
+            SQLiteConnectionStringBuilder builder = new();
+            builder.Version = 3;
+            builder.DataSource = "SaveGames.db";
+
+            List<(string Name, bool FromDatabase)> result = new();
+
+            foreach (var item in fileNames)
+            {
+                result.Add((item, false));
+            }
+
+            if (File.Exists(builder.DataSource))
+            {
+                using (SQLiteConnection connection = new(builder.ToString()))
+                {
+                    connection.Open();
+                    SQLiteCommand command = connection.CreateCommand();
+                    command.CommandText = "select Name from SaveGames order by Name asc;";
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result.Add((reader.GetString(0), true));
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
