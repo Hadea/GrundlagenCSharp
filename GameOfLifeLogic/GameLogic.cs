@@ -157,6 +157,7 @@ namespace GameOfLifeLogic
             int y;
             int x;
             SQLiteBlob blob;
+            byte[] byteArray;
             using (SQLiteConnection connection = new(builder.ToString()))
             {
                 connection.Open();
@@ -167,14 +168,16 @@ namespace GameOfLifeLogic
                 using (SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.KeyInfo))
                 {
                     reader.Read();// nur die erste zeile der rückgabe.
-                    y = reader.GetInt32(0);
-                    x = reader.GetInt32(1);
-                    blob = reader.GetBlob(2, true);
+                    y = reader.GetInt32(0); // spalte 0 = height
+                    x = reader.GetInt32(1); // spalte 1 = width
+                    using (blob = reader.GetBlob(2, true)) // spalte 2 = field
+                    {
+                        byteArray = new byte[blob.GetCount()];
+                        blob.Read(byteArray, blob.GetCount(), 0);
+                    }
                 }
             }
 
-            byte[] byteArray = new byte[blob.GetCount()];
-            blob.Read(byteArray, blob.GetCount(), 0);
             BitArray bits = new(byteArray);
 
             fieldFalse = new bool[y, x];
