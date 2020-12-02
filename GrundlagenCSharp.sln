@@ -45,7 +45,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speech", "Speech\Speech.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameOfLifeLogic", "GameOfLifeLogic\GameOfLifeLogic.csproj", "{E2BE6ECA-4FB1-4E12-8517-A0C17E895828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLite", "SQLite\SQLite.csproj", "{C6A29EF6-ABC9-4821-B0E6-A5F30447807D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLite", "SQLite\SQLite.csproj", "{C6A29EF6-ABC9-4821-B0E6-A5F30447807D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{C808E0F6-EB29-49B8-8DAA-5DAC8514E421}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +143,10 @@ Global
 		{C6A29EF6-ABC9-4821-B0E6-A5F30447807D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6A29EF6-ABC9-4821-B0E6-A5F30447807D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6A29EF6-ABC9-4821-B0E6-A5F30447807D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C808E0F6-EB29-49B8-8DAA-5DAC8514E421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C808E0F6-EB29-49B8-8DAA-5DAC8514E421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C808E0F6-EB29-49B8-8DAA-5DAC8514E421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C808E0F6-EB29-49B8-8DAA-5DAC8514E421}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
