@@ -118,14 +118,15 @@ namespace GameOfLifeLogic
         {
             if (!File.Exists(FileName))
             {
-                loadGameDatabase(FileName);
-                return true;//todo check!
+                return loadGameDatabase(FileName);
             }
 
             string magic; // read first 4 chars
             using (StreamReader reader = new StreamReader(FileName))
             {
-                magic = reader.ReadLine()[..4]; //HACK: read only 4 bytes, do not rely on CRLF
+                char[] buffer = new char[4];
+                reader.Read(buffer, 0, 4);
+                magic = new string(buffer);
             }
 
             switch (magic)
@@ -148,7 +149,7 @@ namespace GameOfLifeLogic
             return true;
         }
 
-        private void loadGameDatabase(string FileName)
+        private bool loadGameDatabase(string FileName)
         {
             SQLiteConnectionStringBuilder builder = new();
             builder.Version = 3;
@@ -162,18 +163,25 @@ namespace GameOfLifeLogic
             {
                 connection.Open();
                 SQLiteCommand command = connection.CreateCommand();
-                command.CommandText = "select Height, Width, Field from SaveGames where Name = @name;";//todo select statement
+                command.CommandText = "select Height, Width, Field from SaveGames where Name = @name;";
                 command.Parameters.AddWithValue("@name", FileName);
 
                 using (SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.KeyInfo))
                 {
-                    reader.Read();// nur die erste zeile der rückgabe.
-                    y = reader.GetInt32(0); // spalte 0 = height
-                    x = reader.GetInt32(1); // spalte 1 = width
-                    using (blob = reader.GetBlob(2, true)) // spalte 2 = field
+                    if (reader.Read())
                     {
-                        byteArray = new byte[blob.GetCount()];
-                        blob.Read(byteArray, blob.GetCount(), 0);
+                        // nur die erste zeile der rückgabe.
+                        y = reader.GetInt32(0); // spalte 0 = height
+                        x = reader.GetInt32(1); // spalte 1 = width
+                        using (blob = reader.GetBlob(2, true)) // spalte 2 = field
+                        {
+                            byteArray = new byte[blob.GetCount()];
+                            blob.Read(byteArray, blob.GetCount(), 0);
+                        }
+                    }
+                    else
+                    {
+                        return false;
                     }
                 }
             }
@@ -191,6 +199,7 @@ namespace GameOfLifeLogic
                     fieldFalse[row, col] = bits[row * x + col];
                 }
             }
+            return true;
         }
 
         private void loadGameBinary(string FileName)
@@ -218,7 +227,7 @@ namespace GameOfLifeLogic
             }
         }
 
-        bool loadGameXML(string FileName)
+        void loadGameXML(string FileName)
         {
             XmlSerializer serializer = new(typeof(StoredGame));
             StoredGame sg;
@@ -238,34 +247,26 @@ namespace GameOfLifeLogic
             }
 
             fieldFalse = convertedField;
-            return true; // HACK: test!
         }
         public bool SaveGame(string FileName, StoredGameVersion Version)
         {
             switch (Version)
             {
                 case StoredGameVersion.Ascii:
-                    saveGameAscii(FileName);
-                    break;
+                    return saveGameAscii(FileName);
                 case StoredGameVersion.AsciiXML:
-                    saveGameXML(FileName);
-                    break;
+                    return saveGameXML(FileName);
                 case StoredGameVersion.Binary:
-                    saveGameBinary(FileName);
-                    break;
+                    return saveGameBinary(FileName);
                 case StoredGameVersion.Database:
-                    saveGameDatabase(FileName);
-                    break;
+                    return saveGameDatabase(FileName);
                 default:
-                    throw new NotImplementedException();
+                    return false;
             }
-
-            return true; //TODO: immer true, exception abfangen und ggfs auf false returnen
         }
 
-        private void saveGameDatabase(string FileName)
+        private bool saveGameDatabase(string FileName)
         {
-            //TODO: check if database file exists
             SQLiteConnectionStringBuilder builder = new();
             builder.Version = 3;
             builder.DataSource = "SaveGames.db";
@@ -297,7 +298,7 @@ namespace GameOfLifeLogic
             {
                 connection.Open();
                 SQLiteCommand command = connection.CreateCommand();
-                command.CommandText = "replace into SaveGames (Name, Height, Width, Field) values (@name, @height, @width, @field);";//todo insert statement
+                command.CommandText = "replace into SaveGames (Name, Height, Width, Field) values (@name, @height, @width, @field);";
                 command.Parameters.AddWithValue("@name", FileName);
                 command.Parameters.AddWithValue("@height", Field.GetLength(0));
                 command.Parameters.AddWithValue("@width", Field.GetLength(1));
@@ -306,49 +307,66 @@ namespace GameOfLifeLogic
                 int linesAffected = command.ExecuteNonQuery();
                 if (linesAffected == 0)
                 {
-                    throw new IOException();
+                    return false;
                 }
             }
+            return true;
         }
 
-        private void saveGameBinary(string FileName)
+        private bool saveGameBinary(string FileName)
         {
-            using (BinaryWriter writer = new(File.Open(FileName + ".gol", FileMode.Create)))
+            try
             {
-                writer.Write("GOLB".ToCharArray());
-                writer.Write((byte)Field.GetLength(0));
-                writer.Write((byte)Field.GetLength(1));
-                BitArray bits = new BitArray(Field.GetLength(0) * Field.GetLength(1));
-                for (int row = 0; row < Field.GetLength(0); row++)
+                using (BinaryWriter writer = new(File.Open(FileName + ".gol", FileMode.Create)))
                 {
-                    for (int col = 0; col < Field.GetLength(1); col++)
+                    writer.Write("GOLB".ToCharArray());
+                    writer.Write((byte)Field.GetLength(0));
+                    writer.Write((byte)Field.GetLength(1));
+                    BitArray bits = new BitArray(Field.GetLength(0) * Field.GetLength(1));
+                    for (int row = 0; row < Field.GetLength(0); row++)
                     {
-                        bits[row * Field.GetLength(1) + col] = Field[row, col];
+                        for (int col = 0; col < Field.GetLength(1); col++)
+                        {
+                            bits[row * Field.GetLength(1) + col] = Field[row, col];
+                        }
                     }
+                    byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
+                    bits.CopyTo(bytes, 0);
+                    writer.Write(bytes);
                 }
-                byte[] bytes = new byte[(bits.Length - 1) / 8 + 1];
-                bits.CopyTo(bytes, 0);
-                writer.Write(bytes);
             }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
-        void saveGameAscii(string FileName)
+        bool saveGameAscii(string FileName)
         {
-            using (StreamWriter writer = new(FileName + ".gol"))
+            try
             {
-                writer.WriteLine("GOLA");// Game Of Life ASCII
-                writer.WriteLine(Field.GetLength(0));// Y
-                writer.WriteLine(Field.GetLength(1));// X
-                for (int row = 0; row < Field.GetLength(0); row++)
+                using (StreamWriter writer = new(FileName + ".gol"))
                 {
-                    for (int col = 0; col < Field.GetLength(1); col++)
+                    writer.WriteLine("GOLA");// Game Of Life ASCII
+                    writer.WriteLine(Field.GetLength(0));// Y
+                    writer.WriteLine(Field.GetLength(1));// X
+                    for (int row = 0; row < Field.GetLength(0); row++)
                     {
-                        writer.Write((Field[row, col] ? "1" : "0"));
+                        for (int col = 0; col < Field.GetLength(1); col++)
+                        {
+                            writer.Write((Field[row, col] ? "1" : "0"));
+                        }
+                        writer.WriteLine();
                     }
-                    writer.WriteLine();
+                    writer.Write("Spielname und datum... demnächst vom nutzer befüllt");
                 }
-                writer.Write("Spielname und datum... demnächst vom nutzer befüllt");
             }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -375,13 +393,11 @@ namespace GameOfLifeLogic
                         fieldFalse[row, col] = line[col] == '1';
                     }
                 }
-
-                //TODO: read description of savegame
             }
             return true;
         }
 
-        void saveGameXML(string FileName)
+        bool saveGameXML(string FileName)
         {
             StoredGame sg = new();
             List<List<bool>> convertedField = new();
@@ -399,11 +415,18 @@ namespace GameOfLifeLogic
             sg.Description = "New Savegame" + DateTime.Now.ToString();
 
             XmlSerializer serializer = new XmlSerializer(typeof(StoredGame));
-
-            using (Stream file = new FileStream(FileName, FileMode.Create, FileAccess.Write))
+            try
             {
-                serializer.Serialize(file, sg);
+                using (Stream file = new FileStream(FileName, FileMode.Create, FileAccess.Write))
+                {
+                    serializer.Serialize(file, sg);
+                }
             }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         public static List<(string Name, bool FromDatabase)> GetAvailableGames()
