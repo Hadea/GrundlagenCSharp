@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Sortieren
 {
@@ -8,21 +9,30 @@ namespace Sortieren
         {
             int[] arrayDataA = new int[30000]; // erstellen des Ausgangsarrays
             arrayRandomFill(arrayDataA); // befüllen mit zufälligen werten
-
-//            int[] arrayDataB = (int[])arrayDataA.Clone();// erstellen einer kopie des arrays
+            byte[] buffer = new byte[1000000];
+            Random rnd = new Random();
+            rnd.NextBytes(buffer);
+            //foreach (var item in buffer) Console.Write(" " + item);
+            Console.WriteLine();
+            //            int[] arrayDataB = (int[])arrayDataA.Clone();// erstellen einer kopie des arrays
             //Array.Copy(arrayDataA, arrayDataB, arrayDataA.Length); // alternative zum kopieren
 
-//            int[] warmUp = (int[])arrayDataA.Clone();
-//            selectionSortOptimized(warmUp);
+            //            int[] warmUp = (int[])arrayDataA.Clone();
+            //            selectionSortOptimized(warmUp);
 
-//            printArray(arrayDataA); // ausgabe des unsortierten arrays
+            //            printArray(arrayDataA); // ausgabe des unsortierten arrays
             DateTime start = DateTime.Now;
-            selectionSortNaiv(arrayDataA);// sortieren
-            Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
+            //selectionSortNaiv(arrayDataA);// sortieren
+            //Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
             //start = DateTime.Now;
             //selectionSortNaiv(arrayDataB);
             //Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
             //printArray(arrayDataA); // ausgabe des nun sortierten arrays
+
+            buffer = MergeSort(buffer);// sortieren
+            Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
+            //foreach (var item in buffer) Console.Write(" " + item);
+            Console.ReadLine();
         }
 
         static void printArray(int[] ArrayToPrint)
@@ -86,6 +96,60 @@ namespace Sortieren
                     ArrayToSort[outer] = backup;// gesicherte an äusserer position speichern
                 }
             }// ende zählen 
+        }
+
+        static byte[] MergeSort(byte[] ArrayToSort)
+        {
+            // ########  DIVIDE  #########
+
+            if (ArrayToSort.Length == 1) return ArrayToSort;
+
+            byte[] linkeSeite = MergeSort(ArrayToSort.Take(ArrayToSort.Length / 2).ToArray());
+            byte[] rechteSeite = MergeSort(ArrayToSort.Skip(ArrayToSort.Length / 2).ToArray());
+
+            // ########  CONQUER  ########
+
+            int linkerZeiger = 0;
+            int rechterZeiger = 0;
+            int ergebnisZeiger = 0;
+
+            byte[] ergebnis = new byte[linkeSeite.Length + rechteSeite.Length];
+            while (linkerZeiger < linkeSeite.Length && rechterZeiger < rechteSeite.Length)
+            {
+                if (rechteSeite[rechterZeiger] < linkeSeite[linkerZeiger])
+                    ergebnis[ergebnisZeiger++] = rechteSeite[rechterZeiger++];
+                else
+                    ergebnis[ergebnisZeiger++] = linkeSeite[linkerZeiger++];
+            }
+
+            while (linkerZeiger < linkeSeite.Length)
+                ergebnis[ergebnisZeiger++] = linkeSeite[linkerZeiger++];
+
+            while (rechterZeiger < rechteSeite.Length)
+                ergebnis[ergebnisZeiger++] = rechteSeite[rechterZeiger++];
+
+            return ergebnis;
+            // solange linkerZähler kleiner als linkelänge und rechterZähler kleiner als rechtelänge
+            //      wenn element im rechten array an position des rechten zeigers kleiner ist als
+            //           der wert im linken array an position des linken zeigers
+            //          rechtes element in das ergebnisarray an position des ergebnisZeigers kopieren
+            //      andernfalls
+            //          linkes element in das ergebnisarray an position des ergebnisZeigers kopieren
+            //      ende wenn
+            //      ergebniszeiger um 1 erhöhen
+            // ende solange
+
+            // solange linkerZähler kleiner als linkeLänge
+            //      linkes element in das ergebnisarray an position des ergebniszeigers kopieren
+            //      ergebniszeiger um 1 erhöhen
+            // ende solange
+
+            // solange rechterZähler kleiner als rechteLänge
+            //      rechtes element in das ergebnisarray an position des ergebniszeigers kopieren
+            //      ergebniszeiger um 1 erhöhen
+            // ende solange
+
+            // ergebnisarray zurückgeben (falls mit return gearbeitet wurde)
         }
     }
 }
