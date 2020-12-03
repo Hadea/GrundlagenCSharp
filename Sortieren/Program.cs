@@ -9,10 +9,10 @@ namespace Sortieren
         {
             int[] arrayDataA = new int[30000]; // erstellen des Ausgangsarrays
             arrayRandomFill(arrayDataA); // befüllen mit zufälligen werten
-            byte[] buffer = new byte[1000000];
+            byte[] buffer = new byte[10];
             Random rnd = new Random();
             rnd.NextBytes(buffer);
-            //foreach (var item in buffer) Console.Write(" " + item);
+            foreach (var item in buffer) Console.Write(" " + item);
             Console.WriteLine();
             //            int[] arrayDataB = (int[])arrayDataA.Clone();// erstellen einer kopie des arrays
             //Array.Copy(arrayDataA, arrayDataB, arrayDataA.Length); // alternative zum kopieren
@@ -29,9 +29,9 @@ namespace Sortieren
             //Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
             //printArray(arrayDataA); // ausgabe des nun sortierten arrays
 
-            buffer = MergeSort(buffer);// sortieren
+            MergeSortScratch(buffer);// sortieren
             Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
-            //foreach (var item in buffer) Console.Write(" " + item);
+            foreach (var item in buffer) Console.Write(" " + item);
             Console.ReadLine();
         }
 
@@ -151,5 +151,80 @@ namespace Sortieren
 
             // ergebnisarray zurückgeben (falls mit return gearbeitet wurde)
         }
+
+        static void MergeSortScratch(byte[] ArrayToSort)
+        {
+            //MergeSortScratchWorker(ArrayToSort, new byte[ArrayToSort.Length], 0, ArrayToSort.Length - 1);
+            MergeSortScratchWorkerLinear(ArrayToSort, new byte[ArrayToSort.Length]);
+        }
+
+        static void MergeSortScratchWorker(byte[] ArrayToSort, byte[] ScratchArray, int FirstElementId, int LastElementId)
+        {
+            if (FirstElementId == LastElementId) return;
+
+            int splitpoint = (LastElementId - FirstElementId) / 2 + FirstElementId;
+
+            MergeSortScratchWorker(ArrayToSort, ScratchArray, FirstElementId, splitpoint);
+            MergeSortScratchWorker(ArrayToSort, ScratchArray, splitpoint + 1, LastElementId);
+
+            int linkerZeiger = FirstElementId;
+            int rechterZeiger = splitpoint + 1;
+            int ergebniszeiger = FirstElementId;
+
+            while (linkerZeiger <= splitpoint && rechterZeiger <= LastElementId)
+            {
+                if (ArrayToSort[rechterZeiger] < ArrayToSort[linkerZeiger])
+                    ScratchArray[ergebniszeiger++] = ArrayToSort[rechterZeiger++];
+                else
+                    ScratchArray[ergebniszeiger++] = ArrayToSort[linkerZeiger++];
+            }
+
+            while (linkerZeiger <= splitpoint)
+                ScratchArray[ergebniszeiger++] = ArrayToSort[linkerZeiger++];
+
+            while (rechterZeiger <= LastElementId)
+                ScratchArray[ergebniszeiger++] = ArrayToSort[rechterZeiger++];
+
+            for (int counter = FirstElementId; counter <= LastElementId; counter++)
+                ArrayToSort[counter] = ScratchArray[counter];
+        }
+
+
+        static void MergeSortScratchWorkerLinear(byte[] ArrayToSort, byte[] ScratchArray)
+        {
+            int stride = 2;
+
+            while (stride*2 < ArrayToSort.Length)
+            {
+                for (int counter = 0; counter < ArrayToSort.Length; counter+= stride)
+                {
+                    int splitpoint = (counter + stride / 2< ArrayToSort.Length ? counter + stride / 2: ArrayToSort.Length-1);
+                    int linkerZeiger = counter;
+                    int rechterZeiger = (splitpoint + 1 < ArrayToSort.Length ? splitpoint+1: ArrayToSort.Length-1);
+                    int ergebniszeiger = counter;
+                    int LastElementId = (counter + stride < ArrayToSort.Length ? counter + stride : ArrayToSort.Length - 1);
+
+                    while (linkerZeiger <= splitpoint && rechterZeiger <= LastElementId)
+                    {
+                        if (ArrayToSort[rechterZeiger] < ArrayToSort[linkerZeiger])
+                            ScratchArray[ergebniszeiger++] = ArrayToSort[rechterZeiger++];
+                        else
+                            ScratchArray[ergebniszeiger++] = ArrayToSort[linkerZeiger++];
+                    }
+
+                    while (linkerZeiger <= splitpoint)
+                        ScratchArray[ergebniszeiger++] = ArrayToSort[linkerZeiger++];
+
+                    while (rechterZeiger <= LastElementId)
+                        ScratchArray[ergebniszeiger++] = ArrayToSort[rechterZeiger++];
+
+                    for (int cnt = counter; cnt <= LastElementId; cnt++)
+                        ArrayToSort[cnt] = ScratchArray[cnt];
+
+                }
+                stride *= 2;
+            }
+        }
+
     }
 }
