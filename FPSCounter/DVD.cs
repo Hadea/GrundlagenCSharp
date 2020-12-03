@@ -8,14 +8,11 @@ namespace FPSCounter
         string[] logo = new string[] { @"|\  | | |\ ",
                                        @"| > \ / | >",
                                        @"|/   V  |/ "};
-        string[] clear = new string[] { "           ", "           ", "           " };
-
 
         Point position;
         (bool X, bool Y) direction;
         DateTime lastPositionUpdate;
         Random rndGen = new Random();
-        ConsoleColor color;
 
         public void Draw()
         {
@@ -36,8 +33,8 @@ namespace FPSCounter
 
                 // testen ob eine richtungsänderung nötig ist
                 var directionOld = direction;
-                if (position.X + logo[0].Length + 5 > 80 ) direction.X = false;
-                if (position.Y + logo.Length + 5 > 25) direction.Y = false;
+                if (position.X + logo[0].Length > 80-1 ) direction.X = false;
+                if (position.Y + logo.Length > 25-1) direction.Y = false;
                 if (position.X < 1) direction.X = true;
                 if (position.Y < 1) direction.Y = true;
 

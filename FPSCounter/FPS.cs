@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FPSCounter
 {
@@ -25,7 +21,7 @@ namespace FPSCounter
                 for (int counter = 0; counter < output.Length; counter++)
                 {
                     Program.ScreenBuffer[counter].Char.UnicodeChar = output[counter];
-                    Program.ScreenBuffer[counter].Attributes = 0x02 | 0x04 | 0x08;
+                    Program.ScreenBuffer[counter].Attributes = (byte)COLOR.YELLOW_TEXT;
                 }
                 framesSinceLastUpdate = 0;
                 lastUpdate = DateTime.Now;
