@@ -35,10 +35,9 @@ namespace Objects
             foreach (var item in meineListe)
             {
                 item.ID();
+                item.HiddenID();
             }
-
-
-
+            Console.ReadLine();
         }
     }
 }

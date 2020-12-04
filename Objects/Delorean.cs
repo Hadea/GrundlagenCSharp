@@ -9,7 +9,12 @@ namespace Objects
         public virtual void ID()
         {
             Console.WriteLine("Delorean");
-        }        
+        }
+
+        public void HiddenID()
+        {
+            Console.WriteLine("Delorean Hidden");
+        }
     }
 
     class TimeMashine : Delorean
@@ -20,6 +25,11 @@ namespace Objects
         public sealed override void ID()
         {
             Console.WriteLine("TimeMashine");
+        }
+
+        public new void HiddenID() // mit dem new bestätigen wir das wir gewollt den gleichen methodennamen wie im delorean verwenden wollen
+        {
+            Console.WriteLine("TimeMashine Hidden");
         }
     }
 
