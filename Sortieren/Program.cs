@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Sortieren
@@ -9,10 +10,10 @@ namespace Sortieren
         {
             int[] arrayDataA = new int[30000]; // erstellen des Ausgangsarrays
             arrayRandomFill(arrayDataA); // befüllen mit zufälligen werten
-            byte[] buffer = new byte[10];
+            byte[] buffer = new byte[10000000];
             Random rnd = new Random();
             rnd.NextBytes(buffer);
-            foreach (var item in buffer) Console.Write(" " + item);
+            //foreach (var item in buffer) Console.Write(" " + item);
             Console.WriteLine();
             //            int[] arrayDataB = (int[])arrayDataA.Clone();// erstellen einer kopie des arrays
             //Array.Copy(arrayDataA, arrayDataB, arrayDataA.Length); // alternative zum kopieren
@@ -29,9 +30,12 @@ namespace Sortieren
             //Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
             //printArray(arrayDataA); // ausgabe des nun sortierten arrays
 
-            MergeSortScratch(buffer);// sortieren
+            //MergeSortScratch(buffer);// sortieren
+            //IndexedSort(buffer);
+            //buffer = MergeSortWithoutRecursion(buffer);
+            Array.Sort(buffer);
             Console.WriteLine("Array sortiert nach {0} millisekunden", (DateTime.Now - start).TotalMilliseconds);
-            foreach (var item in buffer) Console.Write(" " + item);
+            //foreach (var item in buffer) Console.Write(" " + item);
             Console.ReadLine();
         }
 
@@ -189,18 +193,22 @@ namespace Sortieren
                 ArrayToSort[counter] = ScratchArray[counter];
         }
 
-
         static void MergeSortScratchWorkerLinear(byte[] ArrayToSort, byte[] ScratchArray)
         {
             int stride = 2;
 
-            while (stride*2 < ArrayToSort.Length)
+            while (stride*2 < ArrayToSort.Length) //todo ende checken
             {
-                for (int counter = 0; counter < ArrayToSort.Length; counter+= stride)
+                for (int counter = 0; counter < ArrayToSort.Length; counter+= stride)//todo ende benötigt einen weiteren durchlauf
                 {
-                    int splitpoint = (counter + stride / 2< ArrayToSort.Length ? counter + stride / 2: ArrayToSort.Length-1);
+                    if (counter + stride/ 2 > ArrayToSort.Length-1)
+                    {
+                        break;
+                    }
+
+                    int splitpoint = counter + stride / 2;
                     int linkerZeiger = counter;
-                    int rechterZeiger = (splitpoint + 1 < ArrayToSort.Length ? splitpoint+1: ArrayToSort.Length-1);
+                    int rechterZeiger = (splitpoint < ArrayToSort.Length ? splitpoint+1: ArrayToSort.Length-1);
                     int ergebniszeiger = counter;
                     int LastElementId = (counter + stride < ArrayToSort.Length ? counter + stride : ArrayToSort.Length - 1);
 
@@ -226,5 +234,114 @@ namespace Sortieren
             }
         }
 
+        /// <summary>
+        /// By Tobias
+        /// </summary>
+        /// <param name="ArrayToSort"></param>
+        static void IndexedSort(byte[] ArrayToSort)
+        {
+            int[] sortedArrayIndex = new int[256];
+
+            for (int i = 0; i < ArrayToSort.Length; i++)
+            {
+                sortedArrayIndex[ArrayToSort[i]]++; // no need
+            }
+
+            int writerID = 0;
+            for (short ListCounter = 0; ListCounter < sortedArrayIndex.Length; ListCounter++)
+            {
+                for (int ElementCounter = 0; ElementCounter < sortedArrayIndex[ListCounter]; ElementCounter++)
+                {
+                    ArrayToSort[writerID++] = (byte)ListCounter;
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// by Frederic
+        /// </summary>
+        /// <param name="ArrayLength"></param>
+        /// <param name="NewArrayLength"></param>
+        /// <returns></returns>
+        static bool GetNextPow(int ArrayLength, out int NewArrayLength)
+        {
+            NewArrayLength = 1;
+
+            while (NewArrayLength < ArrayLength) NewArrayLength <<= 1;
+
+            return NewArrayLength != ArrayLength ? true : false;
+        }
+
+        /// <summary>
+        /// by Frederic
+        /// </summary>
+        /// <param name="ArrayToSort"></param>
+        /// <returns></returns>
+        static byte[] MergeSortWithoutRecursion(byte[] ArrayToSort)
+        {
+            int methodCount = 1;
+            int Schrittlänge;
+            int linkerCounter;
+            int rechterCounter;
+            int gesamtCounter;
+            int OriginalLength = ArrayToSort.Length;                            //speichern der Original-Länge des übergebenen Arrays
+
+            byte[] MergedArray;
+
+            if (GetNextPow(OriginalLength, out int NewLength))
+            {
+                Array.Resize(ref ArrayToSort, NewLength);                       //die Länge des übergebenen Arrays auf neue Länge setzen
+                //da das alte Array mit der neuen Länge hinten mit 0 aufgefüllt wird...
+                for (int counter = OriginalLength; counter < ArrayToSort.Length; counter++)
+                {
+                    ArrayToSort[counter] = byte.MaxValue;                       //...alle hinzugefügten Nullen mit 255 ersetzen
+                }
+            }
+
+            MergedArray = new byte[ArrayToSort.Length];
+            ArrayToSort.CopyTo(MergedArray, 0);                                 //Kopie des Arrays in ein Zwischenlager
+
+            while (methodCount < ArrayToSort.Length)
+            {
+                gesamtCounter = 0;
+                Schrittlänge = 2 * methodCount;
+                for (int ArrayPosition = 0; ArrayPosition < ArrayToSort.Length; ArrayPosition += Schrittlänge)
+                {
+                    linkerCounter = ArrayPosition;
+                    rechterCounter = ArrayPosition + Schrittlänge / 2;
+
+                    while (linkerCounter != (ArrayPosition + Schrittlänge / 2)
+                        && rechterCounter != (ArrayPosition + Schrittlänge))
+                    {
+                        if (ArrayToSort[linkerCounter] < ArrayToSort[rechterCounter])
+                        {
+                            MergedArray[gesamtCounter++] = ArrayToSort[linkerCounter++];
+                        }
+                        else
+                        {
+                            MergedArray[gesamtCounter++] = ArrayToSort[rechterCounter++];
+                        }
+                    }
+
+                    while (linkerCounter < ArrayPosition + Schrittlänge / 2)
+                    {
+                        MergedArray[gesamtCounter++] = ArrayToSort[linkerCounter++];
+                    }
+
+                    while (rechterCounter < ArrayPosition + Schrittlänge)
+                    {
+                        MergedArray[gesamtCounter++] = ArrayToSort[rechterCounter++];
+                    }
+                }
+
+                methodCount <<= 1;
+                MergedArray.CopyTo(ArrayToSort, 0);
+            }
+
+            Array.Resize(ref ArrayToSort, OriginalLength);
+            return ArrayToSort;
+        }
     }
 }
